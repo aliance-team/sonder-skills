@@ -16,6 +16,7 @@ set -euo pipefail
 #   bash .opencode/scripts/atomic-commits.sh /tmp/commits.txt
 #
 # Rules enforced:
+#   - Refuses to run on protected branches (main/master)
 #   - Exactly 1 file staged per commit
 #   - If verification fails, abort all (no partial commits)
 #   - Script cleans up after itself
@@ -31,6 +32,17 @@ fi
 
 if [[ ! -f "$COMMITS_FILE" ]]; then
   echo "ERROR: File not found: $COMMITS_FILE"
+  exit 1
+fi
+
+# ════════════════════════════════════════════════════════════════════════
+# Safety guard: never commit directly on a protected branch (main/master).
+# ════════════════════════════════════════════════════════════════════════
+CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD || true)
+if [[ -n "$CURRENT_BRANCH" && ( "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "master" ) && "${ATOMIC_COMMITS_ALLOW_PROTECTED:-0}" != "1" ]]; then
+  echo "ERROR: Refusing to commit on protected branch '$CURRENT_BRANCH'."
+  echo "       Create a branch first:  git switch -c <type>/<short-description>"
+  echo "       (Override: ATOMIC_COMMITS_ALLOW_PROTECTED=1)"
   exit 1
 fi
 

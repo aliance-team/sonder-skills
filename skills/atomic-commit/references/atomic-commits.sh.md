@@ -29,6 +29,7 @@ set -euo pipefail
 #   bash atomic-commits.sh /tmp/commits.txt
 #
 # Rules enforced:
+#   - Refuses to run on protected branches (main/master)
 #   - Exactly 1 file staged per commit
 #   - If any entry is invalid or verification fails, abort before committing
 #     anything further (no partial/half-applied commit sets past that point)
@@ -56,6 +57,15 @@ fi
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 cd "$REPO_ROOT"
+
+# Safety guard: never commit directly on a protected branch (main/master).
+CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD || true)
+if [[ -n "$CURRENT_BRANCH" && ( "$CURRENT_BRANCH" == "main" || "$CURRENT_BRANCH" == "master" ) && "${ATOMIC_COMMITS_ALLOW_PROTECTED:-0}" != "1" ]]; then
+  echo "ERROR: Refusing to commit on protected branch '$CURRENT_BRANCH'."
+  echo "       Create a branch first:  git switch -c <type>/<short-description>"
+  echo "       (Override: ATOMIC_COMMITS_ALLOW_PROTECTED=1)"
+  exit 1
+fi
 
 TOTAL=$(grep -c . "$COMMITS_FILE" || true)
 echo "→ Processing $TOTAL atomic commit(s) from $COMMITS_FILE"

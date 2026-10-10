@@ -16,7 +16,18 @@ Only commit when the user explicitly says "commit". No implicit triggers.
 - "commit" / "commit this" / "commit that" → triggers commit flow
 - "continue there's a lot to commit" → does NOT auto-trigger commit. Wait for an explicit "commit".
 
-## Rule 2: One File Per Commit — Strict
+## Rule 2: Never Commit on a Protected Branch
+
+`main` (and `master`) are protected. Never commit directly to them — always work on a branch.
+
+- ✅ `git switch -c <type>/<short-description>` → commit on the branch
+- ❌ Committing while `HEAD` is on `main`/`master` — FORBIDDEN
+- The bundled script **refuses to run on `main`/`master`** and exits non-zero before touching anything.
+- Caught mid-flow on `main`? Create a branch first, then commit: `git switch -c <type>/<short-description>`.
+- Detached `HEAD` is allowed; only the named protected branches are blocked.
+- Rare escape hatch (e.g. a brand-new repo whose only branch is `main`): `ATOMIC_COMMITS_ALLOW_PROTECTED=1`.
+
+## Rule 3: One File Per Commit — Strict
 
 Every commit stages **exactly one file**. No exceptions.
 
@@ -25,7 +36,7 @@ Every commit stages **exactly one file**. No exceptions.
 - ❌ Grouping 2+ files in a single commit — FORBIDDEN
 - ❌ Delegating to a "commit" subagent — FORBIDDEN. Use the bundled `atomic-commits.sh` directly.
 
-## Rule 3: Batch with the bundled script (2+ files)
+## Rule 4: Batch with the bundled script (2+ files)
 
 When 2+ files need committing, **never** do them sequentially by hand or group them in one commit.
 
@@ -46,13 +57,14 @@ rm -f /tmp/commits.txt
 The script lives next to this file at `~/.agents/skills/atomic-commits/atomic-commits.sh` and enforces the rules itself:
 
 - parses `path:message` lines, strips a leading `./`, skips empty lines
+- refuses to run at all on the protected branches `main`/`master`
 - verifies each file actually has changes (tracked, staged, or untracked) and skips it otherwise
 - stages exactly one file, and **aborts the whole batch** if more than one file is ever staged
 - commits with the message as given and prints `✅ [n/total] path` per commit, leaving the list file for you to delete
 
 For a single file, a plain `git add <file> && git commit -m "<message>"` is enough — the script is for batches.
 
-## Rule 4: No Analysis Ceremony — ZERO Output Display
+## Rule 5: No Analysis Ceremony — ZERO Output Display
 
 Do NOT display to the user:
 
@@ -63,7 +75,7 @@ Do NOT display to the user:
 
 Internal use only: `git diff --stat` / `git status --short` to build the commit list. Then run the script. Done.
 
-## Rule 5: No Push/PR Discussion After Commit
+## Rule 6: No Push/PR Discussion After Commit
 
 After committing:
 

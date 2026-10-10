@@ -18,6 +18,7 @@ No review loop — stage, verify, commit.
 ## Non-negotiable (read first)
 
 - **Exactly one file per commit.** No exceptions unless the user explicitly opts out in this turn.
+- **Never commit on `main` or `master`.** They are protected — create a branch first (`git switch -c <type>/<short-description>`). The bundled script refuses to run there (rare override: `ATOMIC_COMMITS_ALLOW_PROTECTED=1`).
 - **Never** `git add -A` / `git add .` / `git commit -am` followed by one commit over many files.
 - **Never** hand-group files into "logical" commits. If your commit message covers more than one path, you are doing it wrong — run this skill's script.
 - **Always verify before reporting done:** every new commit must show exactly one file.
