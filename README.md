@@ -11,9 +11,9 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`34` skills · `6149` lines of pure instruction · `0` runtime dependencies
+`30` skills · `4057` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-34-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-30-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -113,15 +113,12 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 
 | Skill                                | What it hijacks                                                                    |
 | ------------------------------------ | ------------------------------------------------------------------------------------ |
-| [`nodejs`](skills/nodejs/SKILL.md)   | Node.js services: framework choice, async patterns, error handling, security, validation. |
-| [`php-pro`](skills/php-pro/SKILL.md) | Modern PHP 8.3+: strict typing, PHPStan level 9, PSR standards, DI, typed DTOs.    |
 | [`rest-api`](skills/rest-api/SKILL.md) | Resource modelling, HTTP methods, status codes, versioning, and API documentation. |
 
 #### Testing
 
 | Skill                                                                  | What it hijacks                                                                            |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [`pest-php-testing-expert`](skills/pest-php-testing-expert/SKILL.md)   | Pest/PHPUnit for Laravel and vanilla PHP. Never writes tests that mock reality away.       |
 | [`vitest-testing-expert`](skills/vitest-testing-expert/SKILL.md)       | Vitest for JS/TS: components, hooks, services, mocks, coverage, Playwright.                |
 
 #### Front end, accessibility & SEO
@@ -148,9 +145,8 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 | [`agents-md-generator`](skills/agents-md-generator/SKILL.md)                                 | Writes a minimal, high-signal `AGENTS.md`, pushing the detail into `docs/{SCOPE}.md`.      |
 | [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md)                                         | The same, for a bloated one: audited and split by progressive disclosure.                  |
 | [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
-| [`ci-devops-expert`](skills/ci-devops-expert/SKILL.md)                                       | CI/CD pipelines, deployments, Docker, servers, backups, environment management.            |
 | [`daily-report`](skills/daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
-| [`sonder-find-skills`](skills/sonder-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers, and hands off to `find-skills` for the ecosystem. |
+| [`sonder-find-skills`](skills/sonder-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers.                      |
 
 ---
 

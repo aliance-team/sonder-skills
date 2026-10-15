@@ -41,11 +41,9 @@ Every commit stages **exactly one file**. No exceptions.
 When 2+ files need committing, **never** do them sequentially by hand or group them in one commit.
 
 ```bash
-# 1. Build the commit list (one line per file: path:commit message)
-cat > /tmp/commits.txt << 'EOF'
-path/to/file1.php:type(scope): message
-path/to/file2.js:type(scope): message
-EOF
+# 1. Build the commit list (one line per file, TAB-separated)
+printf 'path/to/file1.php\ttype(scope): message\n' > /tmp/commits.txt
+printf 'path/to/file2.js\ttype(scope): message\n' >> /tmp/commits.txt
 
 # 2. Run the batch script (from the repo root)
 bash ~/.agents/skills/atomic-commits/atomic-commits.sh /tmp/commits.txt
@@ -56,7 +54,7 @@ rm -f /tmp/commits.txt
 
 The script lives next to this file at `~/.agents/skills/atomic-commits/atomic-commits.sh` and enforces the rules itself:
 
-- parses `path:message` lines, strips a leading `./`, skips empty lines
+- parses TAB-separated `path<TAB>message` lines, strips a leading `./`, skips empty lines
 - refuses to run at all on the protected branches `main`/`master`
 - verifies each file actually has changes (tracked, staged, or untracked) and skips it otherwise
 - stages exactly one file, and **aborts the whole batch** if more than one file is ever staged

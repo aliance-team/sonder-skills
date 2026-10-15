@@ -13,9 +13,7 @@ All commits follow the `skills/atomic-commits` skill. No exceptions:
 - **Two or more files:** batch with the bundled script instead of committing by hand:
 
   ```bash
-  cat > /tmp/commits.txt << 'EOF'
-  path/to/file:type(scope): message
-  EOF
+  printf 'path/to/file\ttype(scope): message\n' > /tmp/commits.txt
   bash skills/atomic-commits/atomic-commits.sh /tmp/commits.txt
   ```
 

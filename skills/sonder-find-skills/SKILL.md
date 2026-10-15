@@ -1,6 +1,6 @@
 ---
 name: sonder-find-skills
-description: Route a problem to the right SONDER first-party skill by proficiency instead of by keyword. Use when the user asks "which of our skills should handle this", "do we have a skill for X", "find our skill for X", "what owns this", invokes /sonder-find-skills, or when the right skill for a job is unclear and the answer should be one of ours. Only routes the skills in this repo; hand off to find-skills for anything from the public ecosystem.
+description: Route a problem to the right SONDER first-party skill by proficiency instead of by keyword. Use when the user asks "which of our skills should handle this", "do we have a skill for X", "find our skill for X", "what owns this", invokes /sonder-find-skills, or when the right skill for a job is unclear and the answer should be one of ours. Only routes the skills in this repo; when nothing here fits, it says so rather than stretching a skill.
 ---
 
 # Sonder Find Skills
@@ -12,7 +12,7 @@ Two different questions, two different skills — don't cross them:
 | Question | Skill |
 | --- | --- |
 | "Which of **our** skills should handle this?" | **this one** |
-| "Is there a skill in the **ecosystem** for this?" | `find-skills` (searches and installs via `npx skills`) |
+| "Is there a skill in the **ecosystem** for this?" | not this skill — search the registry with `npx skills` |
 
 Everything routed here lives in this repo under `skills/`. When nothing here owns the problem, say so and hand off — never stretch a local skill past its proficiency, and never invent a skill.
 
@@ -25,11 +25,10 @@ List the first-party skills (everything not vendored through the CLI), then read
 ```bash
 cd ~/.agents   # the sonder-skills checkout
 python3 - <<'PY'
-import json, os
-lock = json.load(open('.skill-lock.json'))['skills']
-locked = {(v.get('skillPath') or '').split('/')[-2] or k for k, v in lock.items()}
+import os, re
+ignored = set(re.findall(r'^skills/([^/]+)/$', open('.gitignore').read(), re.M))
 disk = {d for d in os.listdir('skills') if os.path.isdir(f'skills/{d}')}
-print('\n'.join(sorted(disk - locked)))
+print('\n'.join(sorted(disk - ignored)))
 PY
 ```
 
@@ -68,15 +67,12 @@ Prefer the tiers in order:
 | --- | --- | --- |
 | [`sonder-sharp-implementation`](skills/sonder-sharp-implementation/SKILL.md) | ●●● | A scoped change to one or a few files: bug fix, tweak, rename, endpoint, component. |
 | [`sonder-sharp-implementation-batch`](skills/sonder-sharp-implementation-batch/SKILL.md) | ●●● | Three or more changes with an order between them (migration → model → endpoint → UI). |
-| [`php-pro`](skills/php-pro/SKILL.md) | ●●○ | PHP depth for the build: strict typing, PSR, DI, typed DTOs, PHPStan. |
-| [`nodejs`](skills/nodejs/SKILL.md) | ●●○ | Node depth for the build: async, error handling, validation, security. |
 | [`rest-api`](skills/rest-api/SKILL.md) | ●●○ | The shape of the endpoints: resources, verbs, status codes, versioning. |
 
 ### Testing
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`pest-php-testing-expert`](skills/pest-php-testing-expert/SKILL.md) | ●●● | Pest/PHPUnit tests, in Laravel or vanilla PHP. |
 | [`vitest-testing-expert`](skills/vitest-testing-expert/SKILL.md) | ●●● | Vitest tests for JS/TS: components, hooks, services, coverage. |
 
 ### Reviewing & fixing
@@ -126,7 +122,6 @@ Prefer the tiers in order:
 | [`agents-md-generator`](skills/agents-md-generator/SKILL.md) | ●●● | Writing a minimal, high-signal `AGENTS.md`. |
 | [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md) | ●●● | The same, for one that has gone bloated or messy. |
 | [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md) | ●●● | The refactor itself: an instructions file past ~60 lines mixing rules with detail. |
-| [`ci-devops-expert`](skills/ci-devops-expert/SKILL.md) | ●●● | Pipelines, deployments, Docker, servers, backups, environment management. |
 
 ## 4. Verify, then compose
 
@@ -137,8 +132,8 @@ Prefer the tiers in order:
 ## Boundaries
 
 - **Never** recommend a skill that is not on disk.
-- **Never** route to a vendored skill (`ask-matt`, `tdd`, `code-review`, `grilling`, …) as if it were ours. Name one only to hand off to it.
-- Nothing here fits → say so plainly, then offer `find-skills` for the ecosystem, or author a new skill for this repo.
+- **Never** route to an upstream or vendored skill as if it were ours.
+- Nothing here fits → say so plainly, then search the registry with `npx skills`, or author a new skill for this repo.
 
 ## Output
 
