@@ -11,7 +11,7 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`30` skills · `4067` lines of pure instruction · `0` runtime dependencies
+`30` skills · `4057` lines of pure instruction · `0` runtime dependencies
 
 [![skills](https://img.shields.io/badge/skills-30-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
