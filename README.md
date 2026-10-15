@@ -219,9 +219,11 @@ Working from source, hacking on skills, or sending changes back?
 git clone git@github.com:aliance-team/sonder-skills.git
 ```
 
-That clone holds both streams: the first-party skills above, plus upstream sets
-vendored under `skills/` and tracked in `.skill-lock.json` (aihero, vercel-labs,
-warpdotdev). See [`SYNC.md`](SYNC.md) for how they are refreshed.
+That clone holds the first-party skills above. Upstream sets (aihero,
+vercel-labs, warpdotdev) are installed into `skills/` by the
+[`skills`](https://www.aihero.dev/skills) CLI for local use only — they are
+listed in `.skill-lock.json` and **gitignored**, so they never land in this
+repo. See [`SYNC.md`](SYNC.md) for how they are refreshed.
 
 Register the local `skills/` folder for discovery:
 

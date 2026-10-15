@@ -1,32 +1,31 @@
 # Keeping this repo in sync
 
-This repo is a personal snapshot of `~/.agents` (skills + prompts) fed by two streams:
+This repo (`aliance-team/sonder-skills`) is the committed home of the
+first-party skills that live in `~/.agents/skills`.
 
-1. **Upstream skills** — aihero (`mattpocock/skills`), vercel-labs, warpdotdev — installed
-   and refreshed by the [`skills`](https://www.aihero.dev/skills) CLI.
-2. **This repo** (`aliance-team/sonder-skills`) — your own skills and local edits.
-
-`.skill-lock.json` records the provenance (source repo, path, hash) of every CLI-installed skill.
+Upstream sets (aihero / `mattpocock/skills`, vercel-labs, warpdotdev) are
+installed into `skills/` by the [`skills`](https://www.aihero.dev/skills) CLI
+for local use only. Their directories are listed in `.gitignore`, so they stay
+on disk but are never committed here. `.skill-lock.json` records the provenance
+(source repo, path, hash) of the CLI-installed skills.
 
 ## Update from upstream
 
 ```bash
-npx skills update   # refresh aihero + other upstream skills into skills/
-git status          # review what changed
+npx skills update   # refresh upstream skills into skills/ (gitignored)
+git status          # review first-party changes only
 ```
 
 Or run `scripts/sync.sh`, which updates and then prints the git status.
 
 ## Commit and publish
 
-```bash
-git add -A
-git commit -m "chore: sync skills"
-git push
-```
+Commit one file per commit with a Conventional Commit message — see the
+`atomic-commits` skill (or run `commit-review`) — then push.
 
 ## Layout
 
 - `skills/<name>/SKILL.md` — one folder per skill, with `name` + `description` frontmatter.
+- `.gitignore` — upstream skill directories installed locally by the CLI.
 - `.skill-lock.json` — provenance for every CLI-installed skill.
 - `opencode.json` — registers `./skills` for OpenCode discovery when working inside this repo.

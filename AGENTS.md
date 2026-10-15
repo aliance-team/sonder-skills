@@ -24,6 +24,7 @@ All commits follow the `skills/atomic-commits` skill. No exceptions:
 
 ## Skills and upstream sync
 
-- Upstream skills are tracked in `.skill-lock.json`; refresh them with
+- Upstream skills (aihero, vercel-labs, warpdotdev) are installed under `skills/`
+  by the `skills` CLI and recorded in `.skill-lock.json`; refresh them with
   `npx skills update` (see `SYNC.md`).
-- Locally-authored skills live alongside upstream ones under `skills/`.
+- Their directories are gitignored: only first-party skills are committed here.
