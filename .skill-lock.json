@@ -371,18 +371,18 @@
       "updatedAt": "2026-09-25T13:31:10.267Z"
     },
     "plan-executor": {
-      "source": "The-Boxhead-Guy/sonder-skills",
+      "source": "aliance-team/sonder-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/The-Boxhead-Guy/sonder-skills.git",
+      "sourceUrl": "https://github.com/aliance-team/sonder-skills.git",
       "skillPath": "skills/plan-executor/SKILL.md",
       "skillFolderHash": "7616e1b8b89f25fe7e7e2662645adb9888270ef0",
       "installedAt": "2026-09-25T13:31:55.304Z",
       "updatedAt": "2026-09-25T13:31:55.304Z"
     },
     "plan-generator": {
-      "source": "The-Boxhead-Guy/sonder-skills",
+      "source": "aliance-team/sonder-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/The-Boxhead-Guy/sonder-skills.git",
+      "sourceUrl": "https://github.com/aliance-team/sonder-skills.git",
       "skillPath": "skills/plan-generator/SKILL.md",
       "skillFolderHash": "89ea00e36137b12fcd12dce3b7ab1e3a94f401a4",
       "installedAt": "2026-09-25T13:31:55.305Z",
