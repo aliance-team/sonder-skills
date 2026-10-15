@@ -4,7 +4,7 @@ This repo is a personal snapshot of `~/.agents` (skills + prompts) fed by two st
 
 1. **Upstream skills** — aihero (`mattpocock/skills`), vercel-labs, warpdotdev — installed
    and refreshed by the [`skills`](https://www.aihero.dev/skills) CLI.
-2. **This repo** (`The-BoxHead-Guy/sonder-skills`) — your own skills and local edits.
+2. **This repo** (`aliance-team/sonder-skills`) — your own skills and local edits.
 
 `.skill-lock.json` records the provenance (source repo, path, hash) of every CLI-installed skill.
 
