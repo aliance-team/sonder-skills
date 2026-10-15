@@ -1,15 +1,6 @@
 {
   "version": 3,
   "skills": {
-    "find-skills": {
-      "source": "vercel-labs/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/vercel-labs/skills.git",
-      "skillPath": "skills/find-skills/SKILL.md",
-      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
-      "installedAt": "2026-09-25T13:31:10.267Z",
-      "updatedAt": "2026-09-25T13:31:10.267Z"
-    },
     "plan-executor": {
       "source": "aliance-team/sonder-skills",
       "sourceType": "github",
@@ -27,15 +18,6 @@
       "skillFolderHash": "89ea00e36137b12fcd12dce3b7ab1e3a94f401a4",
       "installedAt": "2026-09-25T13:31:55.305Z",
       "updatedAt": "2026-09-25T13:31:55.305Z"
-    },
-    "update-skill": {
-      "source": "warpdotdev/common-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/warpdotdev/common-skills.git",
-      "skillPath": ".agents/skills/update-skill/SKILL.md",
-      "skillFolderHash": "84f703bb1c52d3fb9697f3a570c54b5103a3fbf0",
-      "installedAt": "2026-10-07T19:37:56.101Z",
-      "updatedAt": "2026-10-07T19:37:56.101Z"
     }
   },
   "dismissed": {

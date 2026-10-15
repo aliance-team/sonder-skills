@@ -6,8 +6,8 @@ first-party skills that live in `~/.agents/skills`.
 Upstream sets (aihero / `mattpocock/skills`, vercel-labs, warpdotdev) are
 installed into `skills/` by the [`skills`](https://www.aihero.dev/skills) CLI
 for local use only. Their directories are listed in `.gitignore`, so they stay
-on disk but are never committed here. `.skill-lock.json` records the provenance
-(source repo, path, hash) of the CLI-installed skills.
+on disk but are never committed here — this repo ships **first-party skills
+only**. `.skill-lock.json` records the provenance of CLI-installed skills.
 
 ## Update from upstream
 

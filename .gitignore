@@ -5,7 +5,7 @@ __pycache__/
 *.pyc
 
 # Upstream skills installed locally by the `skills` CLI (not vendored in this repo).
-# Matt Pocock / aihero — https://github.com/mattpocock/skills
+# aihero / Matt Pocock — https://github.com/mattpocock/skills
 skills/ask-matt/
 skills/chief-of-staff/
 skills/claude-handoff/
@@ -44,3 +44,8 @@ skills/writing-beats/
 skills/writing-for-agents/
 skills/writing-fragments/
 skills/writing-shape/
+
+# vercel-labs — https://github.com/vercel-labs/skills
+skills/find-skills/
+# warpdotdev — https://github.com/warpdotdev/common-skills
+skills/update-skill/
