@@ -98,6 +98,12 @@ Prefer the tiers in order:
 | [`new-git-release`](skills/new-git-release/SKILL.md) | ●●● | Release notes for a version, from the commits since the last tag. |
 | [`daily-report`](skills/daily-report/SKILL.md) | ●●○ | A standup report from the day's commits. |
 
+### Deploying
+
+| Skill | Tier | Owns |
+| --- | --- | --- |
+| [`shared-hosting-deploy`](skills/shared-hosting-deploy/SKILL.md) | ●●● | Shipping a PHP app to cPanel/Namecheap shared hosting over SSH + rsync: secrets, build, gates, maintenance mode, versioned backup, rollback. |
+
 ### Front end, accessibility & SEO
 
 | Skill | Tier | Owns |
