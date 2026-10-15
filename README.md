@@ -11,9 +11,9 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`33` skills · `6108` lines of pure instruction · `0` runtime dependencies
+`34` skills · `6149` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-33-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-34-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -139,6 +139,7 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 | [`image-access`](skills/image-access/SKILL.md)               | Finding and reading images across WSL and the Windows host — pasted screenshots, `C:\…` paths, the clipboard. |
 | [`ffmpeg-image-ops`](skills/ffmpeg-image-ops/SKILL.md)       | Convert, resize, optimise and batch-process raster images with ffmpeg rather than Pillow.                |
+| [`pdf-revision`](skills/pdf-revision/SKILL.md)               | Turns a PDF review doc — screenshots plus numbered notes — into page renders, cropped PNGs and a digest. |
 
 #### Docs, agents & operations
 
@@ -149,7 +150,7 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 | [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
 | [`ci-devops-expert`](skills/ci-devops-expert/SKILL.md)                                       | CI/CD pipelines, deployments, Docker, servers, backups, environment management.            |
 | [`daily-report`](skills/daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
-| [`fmd-template`](skills/fmd-template/SKILL.md)                                               | Onboards a new FMD tenant — brand reskin, whitelists, routing — in one session.            |
+| [`sonder-find-skills`](skills/sonder-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers, and hands off to `find-skills` for the ecosystem. |
 
 ---
 
