@@ -11,9 +11,9 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`9` skills · `608` lines of pure instruction · `0` runtime dependencies
+`33` skills · `6108` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-9-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-33-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -88,6 +88,69 @@ bigger.
 | [`atomic-commit`](skills/atomic-commit/SKILL.md)             | One file, one Conventional Commit, written from the actual diff — never `update stuff`. Self-installs its own helper script on first use.              |
 | [`commit-summary`](skills/commit-summary/SKILL.md)           | Formats findings + fixes + commits into a structured report. Formatting only — it touches nothing.                                                     |
 
+### Beyond the Pipeline
+
+The rest of the loadout, under the same contract: one skill, one responsibility.
+
+#### Shipping & history
+
+| Skill                                                    | What it hijacks                                                                                                                                                                    |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`atomic-commits`](skills/atomic-commits/SKILL.md)       | The batch companion to `atomic-commit`: stages exactly one file per commit through a bundled script, and refuses to run at all on a protected branch.                               |
+| [`new-git-release`](skills/new-git-release/SKILL.md)     | Turns "create release X.Y.Z" into release notes by diffing the commits since the last release tag, then writes them where the repo expects them. Read-only on history.             |
+| [`gitsync`](skills/gitsync/SKILL.md)                     | Merges the latest `main` into one or more branches in isolated worktrees, pre-checks for conflicts, merges only the clean ones, and prints the push commands instead of pushing.    |
+| [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) | Walks an in-progress merge or rebase conflict through to a resolution.                                                                                              |
+| [`verification-safety`](skills/verification-safety/SKILL.md) | The post-subagent safety net: bans destructive git commands and hard-blocks file destruction during verification.                                                                |
+
+#### Implementation
+
+| Skill                                                                          | What it hijacks                                                                                                          |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| [`sonder-sharp-implementation`](skills/sonder-sharp-implementation/SKILL.md)   | Sharp, minimal implementation for a single or few-file change — a bug fix, a tweak, a rename, an endpoint, a component.   |
+| [`sonder-sharp-implementation-batch`](skills/sonder-sharp-implementation-batch/SKILL.md) | The same, for 3+ changes where some depend on others: it fixes the order first, then implements.                  |
+
+#### Backend & API
+
+| Skill                                | What it hijacks                                                                    |
+| ------------------------------------ | ------------------------------------------------------------------------------------ |
+| [`nodejs`](skills/nodejs/SKILL.md)   | Node.js services: framework choice, async patterns, error handling, security, validation. |
+| [`php-pro`](skills/php-pro/SKILL.md) | Modern PHP 8.3+: strict typing, PHPStan level 9, PSR standards, DI, typed DTOs.    |
+| [`rest-api`](skills/rest-api/SKILL.md) | Resource modelling, HTTP methods, status codes, versioning, and API documentation. |
+
+#### Testing
+
+| Skill                                                                  | What it hijacks                                                                            |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [`pest-php-testing-expert`](skills/pest-php-testing-expert/SKILL.md)   | Pest/PHPUnit for Laravel and vanilla PHP. Never writes tests that mock reality away.       |
+| [`vitest-testing-expert`](skills/vitest-testing-expert/SKILL.md)       | Vitest for JS/TS: components, hooks, services, mocks, coverage, Playwright.                |
+
+#### Front end, accessibility & SEO
+
+| Skill                                                | What it hijacks                                                                     |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [`frontend-design`](skills/frontend-design/SKILL.md) | Distinctive, production-grade interfaces — and the judgment to avoid generic AI aesthetics. |
+| [`accessibility`](skills/accessibility/SKILL.md)     | WCAG 2.2 audits and fixes: keyboard paths, screen-reader support, semantics.        |
+| [`contrast-fixes`](skills/contrast-fixes/SKILL.md)   | The narrow, high-frequency case: colour-contrast ratios to WCAG AA, hue-preserving. |
+| [`seo`](skills/seo/SKILL.md)                         | Meta tags, structured data, sitemaps, search visibility.                            |
+
+#### Media
+
+| Skill                                                        | What it hijacks                                                                                          |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| [`image-access`](skills/image-access/SKILL.md)               | Finding and reading images across WSL and the Windows host — pasted screenshots, `C:\…` paths, the clipboard. |
+| [`ffmpeg-image-ops`](skills/ffmpeg-image-ops/SKILL.md)       | Convert, resize, optimise and batch-process raster images with ffmpeg rather than Pillow.                |
+
+#### Docs, agents & operations
+
+| Skill                                                                                        | What it hijacks                                                                            |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [`agents-md-generator`](skills/agents-md-generator/SKILL.md)                                 | Writes a minimal, high-signal `AGENTS.md`, pushing the detail into `docs/{SCOPE}.md`.      |
+| [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md)                                         | The same, for a bloated one: audited and split by progressive disclosure.                  |
+| [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
+| [`ci-devops-expert`](skills/ci-devops-expert/SKILL.md)                                       | CI/CD pipelines, deployments, Docker, servers, backups, environment management.            |
+| [`daily-report`](skills/daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
+| [`fmd-template`](skills/fmd-template/SKILL.md)                                               | Onboards a new FMD tenant — brand reskin, whitelists, routing — in one session.            |
+
 ---
 
 ## System Map
@@ -133,13 +196,13 @@ Two hard composition rules run through the whole set:
 Add the whole loadout to any project with one command:
 
 ```bash
-npx skills add The-BoxHead-Guy/sonder-skills
+npx skills add aliance-team/sonder-skills
 ```
 
 or, if you're team pnpm:
 
 ```bash
-pnpm dlx skills add The-BoxHead-Guy/sonder-skills
+pnpm dlx skills add aliance-team/sonder-skills
 ```
 
 That's it — the skills are discovered and routed on natural language from
@@ -152,8 +215,12 @@ there.
 Working from source, hacking on skills, or sending changes back?
 
 ```bash
-git clone git@github.com:The-BoxHead-Guy/sonder-skills.git
+git clone git@github.com:aliance-team/sonder-skills.git
 ```
+
+That clone holds both streams: the first-party skills above, plus upstream sets
+vendored under `skills/` and tracked in `.skill-lock.json` (aihero, vercel-labs,
+warpdotdev). See [`SYNC.md`](SYNC.md) for how they are refreshed.
 
 Register the local `skills/` folder for discovery:
 
