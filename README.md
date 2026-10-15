@@ -11,9 +11,9 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`30` skills · `4057` lines of pure instruction · `0` runtime dependencies
+`31` skills · `4149` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-30-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-31-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -145,6 +145,7 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 | [`agents-md-generator`](skills/agents-md-generator/SKILL.md)                                 | Writes a minimal, high-signal `AGENTS.md`, pushing the detail into `docs/{SCOPE}.md`.      |
 | [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md)                                         | The same, for a bloated one: audited and split by progressive disclosure.                  |
 | [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
+| [`shared-hosting-deploy`](skills/shared-hosting-deploy/SKILL.md)                             | GitHub Actions deploys to shared hosting over SSH + rsync, keeping the server's multi-GB assets untouched. |
 | [`daily-report`](skills/daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
 | [`sonder-find-skills`](skills/sonder-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers.                      |
 
