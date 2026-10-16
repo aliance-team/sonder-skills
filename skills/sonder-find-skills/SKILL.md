@@ -128,6 +128,7 @@ Prefer the tiers in order:
 | [`agents-md-generator`](skills/agents-md-generator/SKILL.md) | ●●● | Writing a minimal, high-signal `AGENTS.md`. |
 | [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md) | ●●● | The same, for one that has gone bloated or messy. |
 | [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md) | ●●● | The refactor itself: an instructions file past ~60 lines mixing rules with detail. |
+| [`agents-md-workflow-optimizer`](skills/agents-md-workflow-optimizer/SKILL.md) | ●●● | Making sessions faster: scoped commands, gate output, preflight facts, skill routing. |
 
 ## 4. Verify, then compose
 
