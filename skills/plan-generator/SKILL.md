@@ -5,7 +5,7 @@ license: MIT
 metadata:
   pairs_with: plan-executor
   output_type: markdown-plan
-  contract_version: "1"
+  contract_version: "1.1"
 ---
 
 # Plan Generator
@@ -40,10 +40,21 @@ Break the spec into phases. A phase is a coherent chunk of work ending in someth
 - Prefer more, smaller phases when there's real uncertainty — a wrong turn gets caught sooner
 - A trivial task doesn't need multiple phases — one phase with a handful of tasks is fine
 
-### 3. Verification gates
+### 3. Test mode
+Verification can live in two places. Settle which before writing the gates:
+- **`tdd`** — each phase carries its own tests and ends with a test gate, so a wrong turn is caught phase by phase.
+- **`deferred`** — implementation phases run no tests; one final Verification phase writes the tests and checks everything at once.
+
+If the user already said which (e.g. "TDD", "test per phase", "test everything at the end"), use it and don't ask again. If not, wait until the implementation roadmap is complete — the answer only changes the verification structure, so don't interrupt earlier — then ask **one** question before writing the file: *"The implementation plan is ready. TDD (tests and a gate per phase) or deferred (build everything, then one verification phase writes the tests and checks all)?"* If you can't ask (non-interactive or running as a subagent), use `deferred` and say so in the Spec's assumptions.
+
+### 4. Verification gates
 Every phase ends with at least one gate: a concrete, checkable pass/fail condition — "existing tests pass", "endpoint returns 201 with a valid payload", "migration runs cleanly on a fresh DB". Not "review the code" — that isn't checkable. If a gate can't be stated concretely, the phase is probably too vague and needs breaking down further.
 
 Gates are what let `plan-executor` (or a human) know it's safe to move forward, instead of discovering three phases later that phase 2 was silently broken.
+
+**`tdd` mode:** every phase's gate is its own test run, as above.
+
+**`deferred` mode:** implementation phases contain no task that runs tests, typecheck, lint, or a build, and each ends with `- [ ] **Gate:** deferred → Phase N`, where N is the Verification phase. The last phase is `## Phase N: Verification`: it writes the tests, runs the checks once, and holds all the real gates, each concrete and checkable as above.
 
 ## Output contract
 
@@ -65,12 +76,30 @@ Write ONE markdown file with this exact structure. This is machine-parsed by `pl
 - [ ] **Gate:** <checkable condition>
 ```
 
+For `deferred` mode, the same structure with this shape (implementation phases get a deferred gate; the last phase carries the real ones):
+
+```markdown
+## Phase 1: <name>
+- [ ] <concrete task>
+- [ ] **Gate:** deferred → Phase 3
+
+## Phase 2: <name>
+- [ ] <concrete task>
+- [ ] **Gate:** deferred → Phase 3
+
+## Phase 3: Verification
+- [ ] Write the tests for everything built in Phases 1–2
+- [ ] **Gate:** <checkable condition>
+- [ ] **Gate:** <checkable condition>
+```
+
 Format rules:
 - `- [ ]` for every task, including the gate — this is what makes progress trackable and lets execution flip boxes to `- [x]`
 - `**Gate:**` prefix, always the last checkbox in its phase
 - A phase may have more than one gate only if there are genuinely two independent conditions — don't split one condition into two just to pad the list
+- `**Gate:** deferred → Phase N` is not run when reached: the executor leaves it unchecked and ticks all deferred gates once Phase N's gates pass. The Verification phase runs once, after every implementation phase, and not by the agents executing those phases.
 - File name: descriptive (`plan-refund-handling.md`), not generic (`plan.md`), whenever the user might have more than one plan around
 
 ## After writing
 
-Don't just report "done." Briefly walk the user through the phases and confirm the breakdown and gates look right before treating the plan as final — that confirmation is the point of writing it down instead of just starting to code.
+Don't just report "done." Briefly walk the user through the phases and confirm the breakdown and gates look right (and which test mode it uses) before treating the plan as final — that confirmation is the point of writing it down instead of just starting to code.

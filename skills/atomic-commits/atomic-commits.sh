@@ -5,15 +5,18 @@ set -euo pipefail
 # atomic-commits.sh — Reusable atomic commit script for the monorepo
 #
 # Usage:
-#   bash .opencode/scripts/atomic-commits.sh <commits.txt>
+#   bash skills/atomic-commits/atomic-commits.sh <commits.txt>
 #
-# commits.txt format (one entry per line):
-#   path/to/file:type(scope): message
+# commits.txt format (one entry per line, TAB-separated):
+#   path/to/file<TAB>type(scope): message
+#
+# A tab delimiter (not colon) is used because commit messages routinely
+# contain colons themselves (e.g. "fix(api): reject null token: 400").
 #
 # Example:
-#   echo "apps/scaem.app/app/Services/Foo.php:fix(scaem): handle null input" > /tmp/commits.txt
-#   echo "apps/scaem.app/app/Services/Bar.php:feat(scaem): add Bar method" >> /tmp/commits.txt
-#   bash .opencode/scripts/atomic-commits.sh /tmp/commits.txt
+#   printf 'src/Foo.php\tfix(api): handle null input\n' > /tmp/commits.txt
+#   printf 'src/Bar.php\tfeat(api): add Bar method\n' >> /tmp/commits.txt
+#   bash skills/atomic-commits/atomic-commits.sh /tmp/commits.txt
 #
 # Rules enforced:
 #   - Refuses to run on protected branches (main/master)
@@ -26,7 +29,7 @@ COMMITS_FILE="${1:-}"
 
 if [[ -z "$COMMITS_FILE" ]]; then
   echo "ERROR: Usage: $0 <commits-file>"
-  echo "  commits-file: path to file with one 'filepath:commit message' per line"
+  echo "  commits-file: path to file with one 'filepath<TAB>commit message' per line"
   exit 1
 fi
 
@@ -51,21 +54,16 @@ echo "→ Processing $TOTAL atomic commit(s) from $COMMITS_FILE"
 echo ""
 
 COUNT=0
-while IFS= read -r entry || [[ -n "$entry" ]]; do
+while IFS=$'\t' read -r file msg || [[ -n "$file" ]]; do
   # Skip empty lines
-  [[ -z "$entry" ]] && continue
+  [[ -z "$file" ]] && continue
 
-  # Parse: everything before first colon is the path, rest is the message
-  file="${entry%%:*}"
-  msg="${entry#*:}"
-
-  # Handle lines where the path itself contains a colon (e.g. C:\... on Windows)
   # Strip leading ./ if present
   file="${file#./}"
 
   if [[ -z "$file" || -z "$msg" ]]; then
-    echo "ERROR: Invalid entry (missing file or message): $entry"
-    echo "       Format: path/to/file:commit message"
+    echo "ERROR: Invalid entry (expected 'path<TAB>message'): $file"
+    echo "       Format: path/to/file<TAB>commit message"
     exit 1
   fi
 

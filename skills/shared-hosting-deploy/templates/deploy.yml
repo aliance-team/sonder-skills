@@ -1,0 +1,148 @@
+# Shared-hosting deploy — template. Copy to .github/workflows/deploy.yml and fill the <PLACEHOLDERS>.
+#
+# Required secrets: SSH_HOST, SSH_USER, SSH_KEY, SSH_PORT, APP_PATH
+# Rule: never --delete, never sync assets/images*|fonts|video, never back up assets.
+# Drop stages 3/7 entirely when the project has no maintenance.php (qrnet.app).
+
+name: Deploy (Namecheap SSH)
+
+on:
+  push:
+    branches: [<main>]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, curl, zip, bcmath, gd, intl
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # STAGE 1-2: install, build, gate. Omit the build when the project has none.
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Code style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Static analysis (PHPStan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=512M
+
+      # - name: Build Tailwind CSS
+      #   run: npx @tailwindcss/cli -i ./assets/css/tailwind/input.css -o ./assets/css/tailwind/output.css --minify
+
+      # STAGE 3: maintenance down (skip when there is no maintenance.php)
+      - name: Enable maintenance mode
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+            if [ -f maintenance.php ]; then
+              php maintenance.php down
+              echo ">>> maintenance mode on"
+            else
+              echo ">>> no maintenance.php — skipping"
+            fi
+
+      # STAGE 4: versioned server backup. assets/ is skipped — it must never be copied.
+      - name: Backup current release
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            PROJECT_NAME=$(basename "$PWD")
+            BACKUP_DIR="versions/${PROJECT_NAME}_${TIMESTAMP}"
+            mkdir -p versions "$BACKUP_DIR"
+            for item in $(ls -A); do
+              case "$item" in versions|vendor|node_modules|assets) continue ;; esac
+              cp -a "$item" "$BACKUP_DIR/" 2>/dev/null || true
+            done
+            cd versions
+            ls -dt */ 2>/dev/null | tail -n +16 | xargs rm -rf 2>/dev/null || true
+            echo ">>> backup: versions/${PROJECT_NAME}_${TIMESTAMP}"
+
+      # STAGE 5: rsync. NO --delete. Assets excluded.
+      - name: Upload via rsync
+        uses: burnett01/rsync-deployments@7.1.0
+        with:
+          switches: >-
+            -az
+            --exclude=.env --exclude=.env.* --exclude=.htaccess
+            --exclude=.git/ --exclude=.github/
+            --exclude=node_modules/ --exclude=vendor/
+            --exclude=versions/ --exclude=backups/ --exclude=storage/
+            --exclude=tests/ --exclude=docs/ --exclude=openwiki/
+            --exclude=devCommands/ --exclude=scripts/
+            --exclude=assets/images*/ --exclude=assets/fonts/ --exclude=assets/video/
+            --exclude=*.md --exclude=*.log --exclude=phpunit.xml --exclude=pint.json
+            --exclude=.vscode/ --exclude=.idea/
+          path: ./
+          remote_path: ${{ secrets.APP_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_port: ${{ secrets.SSH_PORT }}
+
+      # STAGE 6: dependencies on the server
+      - name: Install Composer dependencies on the server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+            PHP_BIN="php"
+            [ -x /usr/local/bin/ea-php84 ] && PHP_BIN="/usr/local/bin/ea-php84"
+            if [ -f composer.phar ]; then
+              $PHP_BIN composer.phar install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            elif command -v composer >/dev/null 2>&1; then
+              composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            else
+              echo ">>> no composer available — skipping"
+            fi
+
+      # STAGE 7: maintenance up, always
+      - name: Disable maintenance mode
+        if: always()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+            if [ -f maintenance.php ]; then php maintenance.php up; fi
