@@ -25,7 +25,18 @@ def git(*a):
 
 
 def match(path, pats):
-    return any(fnmatch.fnmatch(path, p) for p in pats)
+    """gitignore-style match: a leading '**/' also matches the repo root.
+
+    fnmatch requires the literal '/' inside '**/', so '**/vitest.config.*' would
+    miss a root-level vitest.config.ts. Strip the prefix and retry, which is
+    what '**/foo' means to git and to CODEOWNERS.
+    """
+    for p in pats:
+        if fnmatch.fnmatch(path, p):
+            return True
+        if p.startswith("**/") and fnmatch.fnmatch(path, p[3:]):
+            return True
+    return False
 
 
 def topo_cycle(units):
