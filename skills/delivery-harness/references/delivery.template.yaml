@@ -1,0 +1,54 @@
+# delivery.yaml: desired state. state.json records what actually happened.
+version: 1
+id: alarm-board-rev7
+mode: package-existing        # or: incremental
+
+base:     { branch: main, sha: "<resolved base sha>" }
+snapshot: { ref: refs/snapshots/alarm-board-rev7, sha: "<reviewed sha>" }
+
+policy:
+  commit_skill: atomic-commit
+  commit_granularity: one-file
+  gate_boundary: unit-head          # gates run at each PR head, not each commit
+  # protected_paths: [...]          # optional override; defaults live in scripts/verify_manifest.py
+
+approvals:                          # the agent may only do what is listed here
+  publish_draft_prs: true
+  force_push: []                    # e.g. [dashboard.scaem.app/feat-alarm-taxonomy-board]
+  merge: none                       # none | tier0 | tier0-1  (via merge queue only)
+  deploy: none
+  test_changes: []                  # paths of deleted/excluded tests the human accepted
+
+overlaps: []
+# - path: apps/dashboard/resources/js/pages/alarms.tsx
+#   decision: split-patches         # colocate | merge-units | split-patches
+#   note: taxonomy lands in unit A, ENTRADA heading in unit B
+
+units:
+  - id: alarm-taxonomy
+    branch: dashboard.scaem.app/feat-alarm-taxonomy-board
+    depends_on: []
+    tier: 1                         # 0 docs/chore/copy | 1 normal feature | 2 human required
+    deploy_safety: additive         # additive | flagged | breaking
+    flag: null                      # feature flag guarding user-visible change
+    pr_title: "feat(dashboard): five-colour alert board and legend"
+    paths:
+      - apps/dashboard/resources/js/pages/alarms.tsx
+    gates: [pint, pest, lint, typecheck, frontend-tests, build]
+    acceptance:
+      - Five-colour taxonomy renders consistently on board and history.
+    rollback: "Revert PR. No migration."
+
+  - id: guest-protocol-fmd
+    branch: dashboard.scaem.app/feat-guest-protocol-fmd
+    depends_on: [alarm-taxonomy]
+    tier: 2                         # touches a migration
+    deploy_safety: additive         # new nullable column, old code ignores it
+    flag: null
+    pr_title: "feat(dashboard): ficha médica (fmd) on guest protocols"
+    paths:
+      - apps/dashboard/database/migrations/2026_10_16_add_fmd_to_guest_protocols.php
+    gates: [pint, pest, build]
+    acceptance:
+      - Existing rows unaffected; column nullable; old release still serves traffic.
+    rollback: "Revert PR; column stays (unused). Drop in a later contract unit."

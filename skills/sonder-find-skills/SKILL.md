@@ -92,6 +92,7 @@ Prefer the tiers in order:
 | --- | --- | --- |
 | [`atomic-commit`](skills/atomic-commit/SKILL.md) | ●●● | Every commit: one Conventional Commit per file, never grouped, batch included. |
 | [`commit-review`](skills/commit-review/SKILL.md) | ●●● | Review then commit, end to end. |
+| [`delivery-harness`](skills/delivery-harness/SKILL.md) | ●●● | Turning reviewed work into a stack of deploy-safe PRs: delivery units in a manifest, per-unit gates, risk tiers that gate merging. |
 | [`gitsync`](skills/gitsync/SKILL.md) | ●●● | Merging main into branches in isolated worktrees, conflict-checked. |
 | [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) | ●●● | An in-progress merge or rebase conflict. |
 | [`new-git-release`](skills/new-git-release/SKILL.md) | ●●● | Release notes for a version, from the commits since the last tag. |
