@@ -21,7 +21,7 @@ Or run `scripts/sync.sh`, which updates and then prints the git status.
 ## Commit and publish
 
 Commit one file per commit with a Conventional Commit message — see the
-`atomic-commits` skill (or run `commit-review`) — then push.
+`atomic-commit` skill (or run `commit-review`) — then push.
 
 ## Layout
 
