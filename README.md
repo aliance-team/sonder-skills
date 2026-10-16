@@ -11,9 +11,9 @@
 
 **Agent-grade workflows for AI-based development.**
 
-`31` skills · `4155` lines of pure instruction · `0` runtime dependencies
+`33` skills · `4397` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-31-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-33-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -96,6 +96,7 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 
 | Skill                                                    | What it hijacks                                                                                                                                                                    |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`delivery-harness`](skills/delivery-harness/SKILL.md)   | Turns reviewed work into stacked, deploy-safe PRs: units in a manifest, per-unit gates, an independent reviewer, and tiers that gate merging.                                       |
 | [`atomic-commits`](skills/atomic-commits/SKILL.md)       | The batch companion to `atomic-commit`: stages exactly one file per commit through a bundled script, and refuses to run at all on a protected branch.                               |
 | [`new-git-release`](skills/new-git-release/SKILL.md)     | Turns "create release X.Y.Z" into release notes by diffing the commits since the last release tag, then writes them where the repo expects them. Read-only on history.             |
 | [`gitsync`](skills/gitsync/SKILL.md)                     | Merges the latest `main` into one or more branches in isolated worktrees, pre-checks for conflicts, merges only the clean ones, and prints the push commands instead of pushing.    |
