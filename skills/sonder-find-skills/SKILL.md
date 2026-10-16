@@ -90,8 +90,7 @@ Prefer the tiers in order:
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`atomic-commit`](skills/atomic-commit/SKILL.md) | ●●● | Every commit: one Conventional Commit per file, never grouped. |
-| [`atomic-commits`](skills/atomic-commits/SKILL.md) | ●●● | The batch case: 2+ files, staged one per commit by the bundled script. |
+| [`atomic-commit`](skills/atomic-commit/SKILL.md) | ●●● | Every commit: one Conventional Commit per file, never grouped, batch included. |
 | [`commit-review`](skills/commit-review/SKILL.md) | ●●● | Review then commit, end to end. |
 | [`delivery-harness`](skills/delivery-harness/SKILL.md) | ●●● | Turning reviewed work into a stack of deploy-safe PRs: delivery units in a manifest, per-unit gates, risk tiers that gate merging. |
 | [`gitsync`](skills/gitsync/SKILL.md) | ●●● | Merging main into branches in isolated worktrees, conflict-checked. |
