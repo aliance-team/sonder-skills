@@ -1,0 +1,57 @@
+{
+  "schema": "batch-pr-flow/audit-stack-fixture@1",
+  "repo": "example/repo",
+  "base": "origin/main",
+  "baseSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "prefix": "fastcatalog/",
+  "branches": [
+    {
+      "name": "fastcatalog/01-gone",
+      "tip": null,
+      "pr": 301,
+      "state": "MERGED",
+      "baseRefName": "main",
+      "headRefOid": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "mergeCommit": "cccccccccccccccccccccccccccccccccccccccc",
+      "mergedAt": "2026-11-03T10:00:00Z",
+      "mergeCommitAncestor": true,
+      "headAncestor": true,
+      "treeMatches": true,
+      "expect": "GONE"
+    },
+    {
+      "name": "fastcatalog/02-open",
+      "tip": "1212121212121212121212121212121212121212",
+      "pr": 302,
+      "state": "OPEN",
+      "baseRefName": "main",
+      "headRefOid": "1212121212121212121212121212121212121212",
+      "mergeCommit": null,
+      "mergedAt": null,
+      "ahead": 1,
+      "behind": 1,
+      "uniqueCommitCount": 1,
+      "deltaFiles": 1,
+      "insertions": 3,
+      "deletions": 0,
+      "expect": "OPEN"
+    },
+    {
+      "name": "fastcatalog/03-no-pr",
+      "tip": "1313131313131313131313131313131313131313",
+      "pr": null,
+      "state": null,
+      "baseRefName": null,
+      "headRefOid": null,
+      "mergeCommit": null,
+      "mergedAt": null,
+      "ahead": 0,
+      "behind": 0,
+      "uniqueCommitCount": 0,
+      "deltaFiles": 0,
+      "insertions": 0,
+      "deletions": 0,
+      "expect": "NO_PR"
+    }
+  ]
+}
