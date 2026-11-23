@@ -1,5 +1,5 @@
 ---
-name: fix-review-findings
+name: review-fix-findings
 description: |-
   Apply fixes for a specific list of review findings (from correctness-review, context-review, or any review) — one delegated fix per logical issue, verified after each. Does not review or commit.
   Examples:
