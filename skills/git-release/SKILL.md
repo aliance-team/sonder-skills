@@ -1,5 +1,5 @@
 ---
-name: new-git-release
+name: git-release
 description: >
   Generate release notes for a version by diffing the git history since the
   previous release tag. Use when the user asks for a new release, release
