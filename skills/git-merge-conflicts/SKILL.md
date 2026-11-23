@@ -1,5 +1,5 @@
 ---
-name: resolving-merge-conflicts
+name: git-merge-conflicts
 description: "Use when you need to resolve an in-progress git merge/rebase conflict."
 ---
 
