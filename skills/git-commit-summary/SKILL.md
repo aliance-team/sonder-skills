@@ -1,5 +1,5 @@
 ---
-name: commit-summary
+name: git-commit-summary
 description: |-
   Generate a structured summary of a completed review-and-commit run: findings, fixes applied, and commits made. Formatting only — does not review, fix, or commit anything itself.
   Examples:
