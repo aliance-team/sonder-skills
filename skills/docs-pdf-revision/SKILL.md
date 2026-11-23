@@ -1,5 +1,5 @@
 ---
-name: pdf-revision
+name: docs-pdf-revision
 description: Turns a PDF product/revision document (screenshots + numbered annotations) into vision-ready artifacts — full-page renders, every embedded screenshot cropped to its own PNG, and a digest that pairs each note with the visual it describes. Use when asked to read, review, or act on a PDF, especially "revisión"/"observaciones" docs, specs, or any PDF whose layout carries meaning a text dump would lose.
 ---
 
