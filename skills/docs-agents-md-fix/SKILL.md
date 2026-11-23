@@ -1,5 +1,5 @@
 ---
-name: agents-md-fixer
+name: docs-agents-md-fix
 description: Audit and refactor an existing, bloated, or messy AGENTS.md (or CLAUDE.md) into a minimal root file plus scoped docs/*.md files using progressive disclosure.
 license: MIT
 compatibility: opencode (also works with any agent that reads AGENTS.md)
