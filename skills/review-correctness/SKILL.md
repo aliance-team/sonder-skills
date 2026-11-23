@@ -1,5 +1,5 @@
 ---
-name: correctness-review
+name: review-correctness
 description: |-
   Review a set of file changes (diff + full contents) for correctness, quality, safety, and pattern consistency. Returns a structured PASS/FAIL verdict with findings. Does not fix anything or touch git.
   Examples:
