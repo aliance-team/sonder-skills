@@ -1,5 +1,5 @@
 ---
-name: commit-review
+name: git-commit-review
 description: |-
   Review uncommitted changes, fix blocking issues, then commit each file atomically once clean, and summarize. Composes review-changes + atomic-commit + commit-summary. Invoking this skill is explicit commit authorization.
   Examples:
