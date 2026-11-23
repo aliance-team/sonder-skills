@@ -1,5 +1,5 @@
 ---
-name: agents-md-progressive-disclosure
+name: docs-agents-md-progressive
 description: Refactor a bloated AGENTS.md into a minimal root file plus on-demand guide files under docs/agent/. Use when an agent instructions file has grown past ~60 lines, duplicates itself, or mixes always-relevant rules with task-specific detail.
 ---
 
