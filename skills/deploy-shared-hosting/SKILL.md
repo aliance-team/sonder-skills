@@ -1,5 +1,5 @@
 ---
-name: shared-hosting-deploy
+name: deploy-shared-hosting
 description: Set up or repair a GitHub Actions deploy to cPanel/Namecheap shared hosting over SSH + rsync for a PHP app — build, quality gates, maintenance mode, a versioned server backup, rsync without --delete, composer install, and rollback. Use when adding or fixing a deploy.yml, wiring SSH_* secrets, or shipping one of the dataemergencia/SCAEM sites. Triggers: "set up the deploy", "deploy workflow", "GitHub Actions deploy", "rsync deploy", "ship to the server", "deployment setup". Anti-triggers: container or cloud deploys (Docker, Kubernetes, PaaS), and the manual offline zip flow (`php devCommands/deploy.php`).
 ---
 
