@@ -1,5 +1,5 @@
 ---
-name: agents-md-workflow-optimizer
+name: docs-agents-md-optimize
 description: Ground a project's AGENTS.md in the measured causes of slow agent sessions — the exact scoped commands, gate-output protocol and skill routing a session needs, turned into always-on rules so work lands in fewer turns. Use when sessions feel slow, or the user asks to "optimize AGENTS.md", "make agents faster", "reduce turns", "speed up the workflow", or when starting a multi-phase plan in a project whose AGENTS.md lists no verify commands. Complements agents-md-generator (writes one from scratch) and agents-md-fixer (de-bloats one): this skill is about throughput, not size.
 license: MIT
 compatibility: opencode (also works with any agent that reads AGENTS.md)
@@ -107,7 +107,7 @@ Add a short routing note so the right skill is picked by the *shape* of the task
 `scripts/plan-lint.py` parses a plan file against the `plan-generator` contract and fails on the structural mistakes that make `plan-executor` drift. It runs no LLM and no project commands — pure structure and heuristics:
 
 ```bash
-python3 skills/agents-md-workflow-optimizer/scripts/plan-lint.py path/to/plan.md
+python3 skills/docs-agents-md-optimize/scripts/plan-lint.py path/to/plan.md
 ```
 
 It rejects: a phase with no tasks, a phase whose last checkbox isn't a `**Gate:**`, a task after the gate, a `deferred → Phase N` pointing at a missing or non-Verification phase, a deferred gate inside the Verification phase itself. It warns (non-fatal) on gate commands piped through `tail`/`head`, and on bare whole-suite runners (`vitest run`, `eslint .`, `php artisan test` with no filter) where a scoped form exists — the two heuristic failures that cost the most reruns. Prefer it over a global script: the plan format is a fixed contract, so one generic linter serves every project, and it costs no turns to run.
