@@ -1,5 +1,5 @@
 ---
-name: image-access
+name: media-image-access
 description: Locate, translate, and read image files across WSL/Linux and the Windows host — pasted images, screenshots, clipboard grabs, and Windows-style paths such as C:\Users\...\shot.png. Use whenever the user pastes or attaches an image, shares a Windows file path, says "can you see this image", or asks you to look at a screenshot.
 license: MIT
 compatibility: opencode on WSL2 with the Windows C: drive automounted at /mnt/c
