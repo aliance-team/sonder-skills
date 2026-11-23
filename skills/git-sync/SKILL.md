@@ -1,5 +1,5 @@
 ---
-name: gitsync
+name: git-sync
 description: |-
   Merge the latest main into one or more git branches safely, using isolated git
   worktrees so the primary working tree and any uncommitted work are never disturbed.
