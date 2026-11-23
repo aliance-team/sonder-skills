@@ -1,5 +1,5 @@
 ---
-name: accessibility
+name: frontend-a11y
 description: Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance", "screen reader support", "keyboard navigation", or "make accessible".
 license: MIT
 metadata:
