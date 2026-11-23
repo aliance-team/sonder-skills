@@ -1,5 +1,5 @@
 ---
-name: agents-md-generator
+name: docs-agents-md-generate
 description: Generate a minimal, high-signal AGENTS.md for a repository, with detailed guidance split into docs/{SCOPE}.md files loaded just-in-time (progressive disclosure).".
 license: MIT
 compatibility: opencode (also works with any agent that reads AGENTS.md)
