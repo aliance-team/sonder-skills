@@ -1,5 +1,5 @@
 ---
-name: atomic-commit
+name: git-atomic-commit
 description: |-
   MANDATORY for every commit. Split every git change into one Conventional Commit per file, for any git repo (single-package or monorepo). Never hand-group, never bulk-commit, never run one `git commit` across multiple files. Self-installs its helper script on first use.
   Triggers on ANY commit intent, even implicit: "commit", "commit this", "commit the changes", "atomic commit", "split my changes", "save this", or finishing work that should be committed.
@@ -57,7 +57,7 @@ assuming a fixed location.
    ```
 
    Use the first match — commonly
-   `~/.agents/skills/atomic-commit/scripts/atomic-commits.sh` for
+   `~/.agents/skills/git-atomic-commit/scripts/atomic-commits.sh` for
    `npx skills add` installs. Set `SCRIPT` to that absolute path.
 
 3. Only if no copy exists anywhere, recreate it verbatim from
