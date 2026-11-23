@@ -1,5 +1,5 @@
 ---
-name: rest-api
+name: backend-rest-api
 description: >
   Design RESTful APIs following best practices for resource modeling, HTTP
   methods, status codes, versioning, and documentation. Use when creating new
