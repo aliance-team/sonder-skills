@@ -1,5 +1,5 @@
 ---
-name: vitest-testing-expert
+name: test-vitest
 description: >
   Expert in Vitest testing for JavaScript/TypeScript frontends and backends.
   Activates when writing tests, debugging failures, implementing TDD,
