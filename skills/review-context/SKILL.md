@@ -1,5 +1,5 @@
 ---
-name: context-review
+name: review-context
 description: |-
   Check git history, cross-references, diagnostics, and build status for a set of changed files — context a pure code-logic review misses. Returns a structured PASS/FAIL verdict. Does not review code logic itself and does not fix anything.
   Examples:
