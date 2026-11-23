@@ -1,5 +1,5 @@
 ---
-name: contrast-fixes
+name: frontend-contrast
 description: "Analyze and fix color contrast ratios for WCAG 2.1 AA compliance. Use when the user mentions contrast, WCAG, accessibility, unreadable or 'terrible contrast' buttons, washed-out text, or asks to make colors accessible. Covers text (1.4.3) vs non-text/UI (1.4.11) thresholds, hover/focus/disabled states, and hue-preserving fixes."
 ---
 
@@ -79,7 +79,7 @@ mid-grey photo composites to something much darker than white.
 Use the script bundled with this skill. It is exact — do not eyeball ratios.
 
 ```bash
-python3 ~/.agents/skills/contrast-fixes/contrast.py "#7c8aff" "#ffffff" --text
+python3 ~/.agents/skills/frontend-contrast/contrast.py "#7c8aff" "#ffffff" --text
 ```
 
 Options: `--text` (4.5:1 gate), `--large` (3:1 gate), `--ui` (3:1 non-text gate),
