@@ -1,11 +1,11 @@
 ---
-name: sonder-find-skills
+name: research-find-skills
 description: Route a problem to the right SONDER first-party skill by proficiency instead of by keyword. Use when the user asks "which of our skills should handle this", "do we have a skill for X", "find our skill for X", "what owns this", invokes /sonder-find-skills, or when the right skill for a job is unclear and the answer should be one of ours. Only routes the skills in this repo; when nothing here fits, it says so rather than stretching a skill.
 ---
 
 # Sonder Find Skills
 
-`sonder-find-skills` routes a **problem** to a **skill we own**.
+`research-find-skills` routes a **problem** to a **skill we own**.
 
 Two different questions, two different skills — don't cross them:
 
@@ -66,69 +66,69 @@ Prefer the tiers in order:
 | Skill | Tier | Owns |
 | --- | --- | --- |
 | [`sonder-sharp-implementation`](skills/sonder-sharp-implementation/SKILL.md) | ●●● | A scoped change to one or a few files: bug fix, tweak, rename, endpoint, component. |
-| [`sonder-sharp-implementation-batch`](skills/sonder-sharp-implementation-batch/SKILL.md) | ●●● | Three or more changes with an order between them (migration → model → endpoint → UI). |
-| [`rest-api`](skills/rest-api/SKILL.md) | ●●○ | The shape of the endpoints: resources, verbs, status codes, versioning. |
+| [`sonder-sharp-batch`](skills/sonder-sharp-batch/SKILL.md) | ●●● | Three or more changes with an order between them (migration → model → endpoint → UI). |
+| [`backend-rest-api`](skills/backend-rest-api/SKILL.md) | ●●○ | The shape of the endpoints: resources, verbs, status codes, versioning. |
 
 ### Testing
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`vitest-testing-expert`](skills/vitest-testing-expert/SKILL.md) | ●●● | Vitest tests for JS/TS: components, hooks, services, coverage. |
+| [`test-vitest`](skills/test-vitest/SKILL.md) | ●●● | Vitest tests for JS/TS: components, hooks, services, coverage. |
 
 ### Reviewing & fixing
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
 | [`review-changes`](skills/review-changes/SKILL.md) | ●●● | The whole loop: correctness + context, fix, re-review, up to three cycles. |
-| [`correctness-review`](skills/correctness-review/SKILL.md) | ●●● | Whether the code is right. One pass, no fixes. |
-| [`context-review`](skills/context-review/SKILL.md) | ●●● | What else the change touches: history, cross-references, diagnostics, build. |
-| [`fix-review-findings`](skills/fix-review-findings/SKILL.md) | ●●● | Applying a given findings list, one delegated fix at a time. |
-| [`verification-safety`](skills/verification-safety/SKILL.md) | ●●● | The post-subagent pass: no destructive git, no file destruction. |
-| [`commit-summary`](skills/commit-summary/SKILL.md) | ●●○ | Summarising a review-and-commit run after the fact. |
+| [`review-correctness`](skills/review-correctness/SKILL.md) | ●●● | Whether the code is right. One pass, no fixes. |
+| [`review-context`](skills/review-context/SKILL.md) | ●●● | What else the change touches: history, cross-references, diagnostics, build. |
+| [`review-fix-findings`](skills/review-fix-findings/SKILL.md) | ●●● | Applying a given findings list, one delegated fix at a time. |
+| [`ops-preflight-verify`](skills/ops-preflight-verify/SKILL.md) | ●●● | The post-subagent pass: no destructive git, no file destruction. |
+| [`git-commit-summary`](skills/git-commit-summary/SKILL.md) | ●●○ | Summarising a review-and-commit run after the fact. |
 
 ### Committing, branches & releases
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`atomic-commit`](skills/atomic-commit/SKILL.md) | ●●● | Every commit: one Conventional Commit per file, never grouped, batch included. |
-| [`commit-review`](skills/commit-review/SKILL.md) | ●●● | Review then commit, end to end. |
-| [`delivery-harness`](skills/delivery-harness/SKILL.md) | ●●● | Turning reviewed work into a stack of deploy-safe PRs: delivery units in a manifest, per-unit gates, risk tiers that gate merging. |
-| [`gitsync`](skills/gitsync/SKILL.md) | ●●● | Merging main into branches in isolated worktrees, conflict-checked. |
-| [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) | ●●● | An in-progress merge or rebase conflict. |
-| [`new-git-release`](skills/new-git-release/SKILL.md) | ●●● | Release notes for a version, from the commits since the last tag. |
-| [`daily-report`](skills/daily-report/SKILL.md) | ●●○ | A standup report from the day's commits. |
+| [`git-atomic-commit`](skills/git-atomic-commit/SKILL.md) | ●●● | Every commit: one Conventional Commit per file, never grouped, batch included. |
+| [`git-commit-review`](skills/git-commit-review/SKILL.md) | ●●● | Review then commit, end to end. |
+| [`ops-delivery-harness`](skills/ops-delivery-harness/SKILL.md) | ●●● | Turning reviewed work into a stack of deploy-safe PRs: delivery units in a manifest, per-unit gates, risk tiers that gate merging. |
+| [`git-sync`](skills/git-sync/SKILL.md) | ●●● | Merging main into branches in isolated worktrees, conflict-checked. |
+| [`git-merge-conflicts`](skills/git-merge-conflicts/SKILL.md) | ●●● | An in-progress merge or rebase conflict. |
+| [`git-release`](skills/git-release/SKILL.md) | ●●● | Release notes for a version, from the commits since the last tag. |
+| [`ops-daily-report`](skills/ops-daily-report/SKILL.md) | ●●○ | A standup report from the day's commits. |
 
 ### Deploying
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`shared-hosting-deploy`](skills/shared-hosting-deploy/SKILL.md) | ●●● | Shipping a PHP app to cPanel/Namecheap shared hosting over SSH + rsync: secrets, build, gates, maintenance mode, versioned backup, rollback. |
+| [`deploy-shared-hosting`](skills/deploy-shared-hosting/SKILL.md) | ●●● | Shipping a PHP app to cPanel/Namecheap shared hosting over SSH + rsync: secrets, build, gates, maintenance mode, versioned backup, rollback. |
 
 ### Front end, accessibility & SEO
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
 | [`frontend-design`](skills/frontend-design/SKILL.md) | ●●● | Building the interface itself, to a production standard. |
-| [`accessibility`](skills/accessibility/SKILL.md) | ●●● | WCAG 2.2 audits and fixes: keyboard paths, screen readers, semantics. |
-| [`contrast-fixes`](skills/contrast-fixes/SKILL.md) | ●●● | The narrow case: colour-contrast ratios only, hue-preserving. |
-| [`seo`](skills/seo/SKILL.md) | ●●● | Meta tags, structured data, sitemaps, search visibility. |
+| [`frontend-a11y`](skills/frontend-a11y/SKILL.md) | ●●● | WCAG 2.2 audits and fixes: keyboard paths, screen readers, semantics. |
+| [`frontend-contrast`](skills/frontend-contrast/SKILL.md) | ●●● | The narrow case: colour-contrast ratios only, hue-preserving. |
+| [`frontend-seo`](skills/frontend-seo/SKILL.md) | ●●● | Meta tags, structured data, sitemaps, search visibility. |
 
 ### Media
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`image-access`](skills/image-access/SKILL.md) | ●●● | Finding and reading images across WSL and the Windows host. |
-| [`ffmpeg-image-ops`](skills/ffmpeg-image-ops/SKILL.md) | ●●● | Converting, resizing and optimising raster images. |
-| [`pdf-revision`](skills/pdf-revision/SKILL.md) | ●●● | Reading a PDF review doc: page renders, cropped screenshots, and a digest pairing each note with its visual. |
+| [`media-image-access`](skills/media-image-access/SKILL.md) | ●●● | Finding and reading images across WSL and the Windows host. |
+| [`media-ffmpeg`](skills/media-ffmpeg/SKILL.md) | ●●● | Converting, resizing and optimising raster images. |
+| [`docs-pdf-revision`](skills/docs-pdf-revision/SKILL.md) | ●●● | Reading a PDF review doc: page renders, cropped screenshots, and a digest pairing each note with its visual. |
 
 ### Agent docs & operations
 
 | Skill | Tier | Owns |
 | --- | --- | --- |
-| [`agents-md-generator`](skills/agents-md-generator/SKILL.md) | ●●● | Writing a minimal, high-signal `AGENTS.md`. |
-| [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md) | ●●● | The same, for one that has gone bloated or messy. |
-| [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md) | ●●● | The refactor itself: an instructions file past ~60 lines mixing rules with detail. |
-| [`agents-md-workflow-optimizer`](skills/agents-md-workflow-optimizer/SKILL.md) | ●●● | Making sessions faster: scoped commands, gate output, preflight facts, skill routing. |
+| [`docs-agents-md-generate`](skills/docs-agents-md-generate/SKILL.md) | ●●● | Writing a minimal, high-signal `AGENTS.md`. |
+| [`docs-agents-md-fix`](skills/docs-agents-md-fix/SKILL.md) | ●●● | The same, for one that has gone bloated or messy. |
+| [`docs-agents-md-progressive`](skills/docs-agents-md-progressive/SKILL.md) | ●●● | The refactor itself: an instructions file past ~60 lines mixing rules with detail. |
+| [`docs-agents-md-optimize`](skills/docs-agents-md-optimize/SKILL.md) | ●●● | Making sessions faster: scoped commands, gate output, preflight facts, skill routing. |
 
 ## 4. Verify, then compose
 
