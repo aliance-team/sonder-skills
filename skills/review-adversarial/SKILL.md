@@ -1,5 +1,5 @@
 ---
-name: adversarial-testing
+name: review-adversarial
 description: Use this skill when defining or running test gates in a plan — "adversarial testing", "property-based testing", "fuzzing", "try to break this code", hardening a Verification phase, or when a gate that says "tests pass" is not enough evidence. Defines the three-strategy flow (fresh-context adversarial review, generated-invariant properties, malformed-input fuzzing), the selection rules for which strategy applies, and the exact gate lines plan-generator must emit. Loaded by plan-generator when it writes gates and by plan-executor when it runs them.
 license: MIT
 metadata:
