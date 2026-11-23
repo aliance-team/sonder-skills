@@ -1,5 +1,5 @@
 ---
-name: sonder-sharp-implementation-batch
+name: sonder-sharp-batch
 description: Plan-then-implement workflow for several code changes, especially when some depend on others (migration before model, model before endpoint, endpoint before UI). Use this skill whenever the user lists 3 or more changes, mentions "in order", "depends on", "first... then...", or asks for a batch of fixes/tweaks to be done together, even if they don't ask for a plan. Builds on sonder-sharp-implementation. Do NOT use for a single change, or for more than 8 changes at once (split into batches).
 ---
 
