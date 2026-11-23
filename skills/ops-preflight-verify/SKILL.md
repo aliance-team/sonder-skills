@@ -1,5 +1,5 @@
 ---
-name: verification-safety
+name: ops-preflight-verify
 description: Safe post-subagent verification rules. BANS destructive git commands. NEVER identify/revert scope creep. Hard block against file destruction.
 ---
 
