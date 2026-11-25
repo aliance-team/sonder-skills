@@ -7,19 +7,19 @@ release manager. Cheap models get a narrow, checkable lane and a hard stop.
 
 | Role | Owner | Responsibility |
 | :-- | :-- | :-- |
-| Builder | agent | local changes, atomic commits, feature branch, draft PR, local evidence |
-| Reviewer | agent or human | read the draft, report findings, do not change remote state |
-| Release manager | human | mark ready, merge, close, deploy, rollback |
+| Builder | agent | local changes, atomic commits, feature branch, ready PR, local evidence |
+| Reviewer | agent or human | read the PR, report findings, do not change remote state |
+| Release manager | human | review, merge, close, deploy, rollback |
 
-The human release manager is the only role that changes the shared state after the draft PR.
+The human release manager is the only role that changes the shared state after the PR opens.
 
 ## State machine
 
 ```
-LOCAL → PUSHED → DRAFT → READY → MERGED → DEPLOYED
+LOCAL → PUSHED → OPEN → MERGED → DEPLOYED
 ```
 
-The agent owns `LOCAL`, `PUSHED`, and `DRAFT`. The human owns `READY`, `MERGED`, and `DEPLOYED`.
+The agent owns `LOCAL`, `PUSHED`, and `OPEN`. The human owns `MERGED` and `DEPLOYED`.
 A state transition is a gate, not a continuation: stop at the end of each state and report.
 
 ## Gates
@@ -29,7 +29,7 @@ A state transition is a gate, not a continuation: stop at the end of each state 
 | G0 | correct branch, clean tree, intended base | agent | stop and report |
 | G1 | local checks green (format, static analysis, tests) | agent | fix and re-run |
 | G2 | push accepted by the remote | agent | fetch + merge, never force |
-| G3 | draft PR open, remote CI green | agent | fix and push; report out-of-scope failures |
+| G3 | ready PR open, remote CI green | agent | fix and push; report out-of-scope failures |
 | G4 | human review | human | changes requested → back to G1 |
 | G5 | merge to the target branch | human | resolve on the branch, never rewrite |
 | G6 | deploy approval and window | human | stop |
@@ -43,15 +43,16 @@ A failed gate stops the run. Do not skip forward because a later gate looks easy
 | :-- | :-- | :-- |
 | `git add`, `git commit` | yes | no |
 | `git push <feature-branch>` | yes | no |
-| `gh pr create --draft` | yes | no |
-| update the draft PR body or push more commits | yes | no |
+| `gh pr create` (ready, never `--draft`) | yes | no |
+| `gh pr create --draft` | no | never; open it ready instead |
+| update the PR body or push more commits | yes | no |
 | `gh pr checks`, `gh pr view`, `gh api` reads | yes | no |
-| `gh pr ready`, `gh pr merge`, `gh pr close` | no | yes |
+| `gh pr merge`, `gh pr close` | no | yes |
 | `git push --force`, `git rebase`, `git reset` on shared refs | no | yes |
 | tag, release, workflow dispatch, secrets, environments | no | yes |
 | deploy, rollback, production SQL, server access | no | yes |
 
-When in doubt, stop at the draft PR. A stalled draft is cheap; an unwanted merge or deploy is not.
+When in doubt, open the ready PR and stop. An open PR awaiting review is cheap; an unwanted merge or deploy is not.
 
 ## Stacked PRs
 
@@ -103,7 +104,9 @@ These rules exist because each failure happened in a real session. Treat them as
   is still a workspace change.
 - **No force-push.** A rejected push means fetch + merge. A force-push attempt is a stop-and-report
   event, even when it fails.
-- **No merge, ready, or close without a new instruction.** Green checks and a finished branch are
+- **No draft PRs.** A draft hides finished work and still needs a human to flip it. Open every PR
+  ready for review.
+- **No merge or close without a new instruction.** Green checks and a finished branch are
   evidence, not authorization.
 - **No deploy assumptions.** Production endpoints were assumed ready; they returned 404. Verify the
   dependency before announcing or triggering a deploy.
@@ -122,7 +125,7 @@ Remote: <ref update or "not pushed">
 PR: <url or "none">
 Checks: <pass/fail/skipped, with counts>
 Blocked on: <decision, dependency, or "nothing">
-Next human action: <ready / review / merge / deploy / none>
+Next human action: <review / merge / deploy / none>
 ```
 
 The handoff is complete only when every line is filled. "Done" without a PR URL and a head SHA is
