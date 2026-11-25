@@ -1,0 +1,53 @@
+{
+  "schema": "batch-pr-flow/audit-stack-fixture@1",
+  "repo": "example/repo",
+  "base": "origin/main",
+  "baseSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "prefix": "fastcatalog/",
+  "branches": [
+    {
+      "name": "fastcatalog/01-clean",
+      "tip": "1111111111111111111111111111111111111111",
+      "pr": 201,
+      "state": "MERGED",
+      "baseRefName": "main",
+      "headRefOid": "1111111111111111111111111111111111111111",
+      "mergeCommit": "2222222222222222222222222222222222222222",
+      "mergedAt": "2026-11-02T10:00:00Z",
+      "ahead": 3,
+      "behind": 4,
+      "uniqueCommitCount": 3,
+      "deltaFiles": 2,
+      "insertions": 10,
+      "deletions": 1,
+      "mergeCommitAncestor": true,
+      "treeMatches": true,
+      "commitsOutsidePr": 0,
+      "commitsAfterHead": 0,
+      "prCommitCount": 3,
+      "expect": "MERGED_CLEAN"
+    },
+    {
+      "name": "fastcatalog/02-post-commits",
+      "tip": "3333333333333333333333333333333333333333",
+      "pr": 202,
+      "state": "MERGED",
+      "baseRefName": "main",
+      "headRefOid": "4444444444444444444444444444444444444444",
+      "mergeCommit": "5555555555555555555555555555555555555555",
+      "mergedAt": "2026-11-02T11:00:00Z",
+      "ahead": 5,
+      "behind": 0,
+      "uniqueCommitCount": 5,
+      "deltaFiles": 4,
+      "insertions": 40,
+      "deletions": 2,
+      "mergeCommitAncestor": true,
+      "treeMatches": false,
+      "commitsOutsidePr": 2,
+      "commitsAfterHead": 2,
+      "prCommitCount": 3,
+      "expect": "MERGED_POST_COMMITS"
+    }
+  ]
+}

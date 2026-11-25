@@ -1,0 +1,19 @@
+{
+  "note": "Every first-party skill directory is skills/<category>-<name>. New skills, and any skill you rename, must use one of these prefixes. The legacy list is for skills not renamed yet: it may only shrink.",
+  "categories": {
+    "backend-": "Server-side API and service design.",
+    "deploy-": "Shipping and hosting.",
+    "docs-": "Documentation, specs and instruction files.",
+    "frontend-": "Browser UI, styling and presentation.",
+    "git-": "Commits, pull requests, releases, branch sync, issue triage.",
+    "legacy-": "Behaviour-preserving change in old systems, and doc realignment.",
+    "media-": "Images, video, audio and asset handling.",
+    "ops-": "Session tooling, delivery pipelines and verification.",
+    "plan-": "Planning and plan execution.",
+    "research-": "Finding the right skill, investigating a question.",
+    "review-": "Code review, correctness, adversarial gates.",
+    "sonder-": "Direct implementation workflows.",
+    "test-": "Test authoring and agent evals."
+  },
+  "legacy": []
+}
