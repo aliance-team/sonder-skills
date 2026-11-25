@@ -13,7 +13,7 @@
 
 `33` skills · `4400` lines of pure instruction · `0` runtime dependencies
 
-[![skills](https://img.shields.io/badge/skills-33-brightgreen?style=flat-square&logo=superuser)](skills/)
+[![skills](https://img.shields.io/badge/skills-57-brightgreen?style=flat-square&logo=superuser)](skills/)
 [![agent](https://img.shields.io/badge/agents-OpenCode-black?style=flat-square)](https://opencode.ai)
 [![contract](https://img.shields.io/badge/contracts-machine--parsed-blue?style=flat-square)](skills/plan-generator/SKILL.md)
 
@@ -65,7 +65,7 @@ Never fakes it.
 </td></tr>
 <tr><td colspan="2">
 
-**★ [`commit-review`](skills/commit-review/SKILL.md)**
+**★ [`git-commit-review`](skills/git-commit-review/SKILL.md)**
 The full pipeline: review the changes, fix them, commit them atomically,
 summarize the run. Orchestrates three specialist skills and does no
 reviewing, fixing, or committing itself. Invoking it **is** the commit
@@ -81,12 +81,12 @@ bigger.
 
 | Skill                                                        | What it hijacks                                                                                                                                        |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`correctness-review`](skills/correctness-review/SKILL.md)   | Logic, quality, safety, pattern consistency. Returns a structured `PASS`/`FAIL` verdict with tagged findings. Reads, never writes.                     |
-| [`context-review`](skills/context-review/SKILL.md)           | The pass pure code-reading misses: git history, cross-references, diagnostics, build status. Also `PASS`/`FAIL`.                                       |
-| [`fix-review-findings`](skills/fix-review-findings/SKILL.md) | Takes an exact findings list and fixes **only those** — grouped per file, one delegated subagent per file, verified after each. No drive-by refactors. |
+| [`review-correctness`](skills/review-correctness/SKILL.md)   | Logic, quality, safety, pattern consistency. Returns a structured `PASS`/`FAIL` verdict with tagged findings. Reads, never writes.                     |
+| [`review-context`](skills/review-context/SKILL.md)           | The pass pure code-reading misses: git history, cross-references, diagnostics, build status. Also `PASS`/`FAIL`.                                       |
+| [`review-fix-findings`](skills/review-fix-findings/SKILL.md) | Takes an exact findings list and fixes **only those** — grouped per file, one delegated subagent per file, verified after each. No drive-by refactors. |
 | [`review-changes`](skills/review-changes/SKILL.md)           | The loop: **review → fix → re-review**, capped at 3 cycles, ending in `PASS`, `FAIL`, or `NO CHANGES`.                                                 |
-| [`atomic-commit`](skills/atomic-commit/SKILL.md)             | One file, one Conventional Commit, written from the actual diff — never `update stuff`. Self-installs its own helper script on first use.              |
-| [`commit-summary`](skills/commit-summary/SKILL.md)           | Formats findings + fixes + commits into a structured report. Formatting only — it touches nothing.                                                     |
+| [`git-atomic-commit`](skills/git-atomic-commit/SKILL.md)             | One file, one Conventional Commit, written from the actual diff — never `update stuff`. Self-installs its own helper script on first use.              |
+| [`git-commit-summary`](skills/git-commit-summary/SKILL.md)           | Formats findings + fixes + commits into a structured report. Formatting only — it touches nothing.                                                     |
 
 ### Beyond the Pipeline
 
@@ -96,60 +96,60 @@ The rest of the loadout, under the same contract: one skill, one responsibility.
 
 | Skill                                                    | What it hijacks                                                                                                                                                                    |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`delivery-harness`](skills/delivery-harness/SKILL.md)   | Turns reviewed work into stacked, deploy-safe PRs: units in a manifest, per-unit gates, an independent reviewer, and tiers that gate merging.                                       |
-| [`atomic-commits`](skills/atomic-commits/SKILL.md)       | The batch companion to `atomic-commit`: stages exactly one file per commit through a bundled script, and refuses to run at all on a protected branch.                               |
-| [`new-git-release`](skills/new-git-release/SKILL.md)     | Turns "create release X.Y.Z" into release notes by diffing the commits since the last release tag, then writes them where the repo expects them. Read-only on history.             |
-| [`gitsync`](skills/gitsync/SKILL.md)                     | Merges the latest `main` into one or more branches in isolated worktrees, pre-checks for conflicts, merges only the clean ones, and prints the push commands instead of pushing.    |
-| [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) | Walks an in-progress merge or rebase conflict through to a resolution.                                                                                              |
-| [`verification-safety`](skills/verification-safety/SKILL.md) | The post-subagent safety net: bans destructive git commands and hard-blocks file destruction during verification.                                                                |
+| [`ops-delivery-harness`](skills/ops-delivery-harness/SKILL.md)   | Turns reviewed work into stacked, deploy-safe PRs: units in a manifest, per-unit gates, an independent reviewer, and tiers that gate merging.                                       |
+| [`git-batch-pr`](skills/git-batch-pr/SKILL.md)       | The batch companion to `git-atomic-commit`: stages exactly one file per commit through a bundled script, and refuses to run at all on a protected branch.                               |
+| [`git-release`](skills/git-release/SKILL.md)     | Turns "create release X.Y.Z" into release notes by diffing the commits since the last release tag, then writes them where the repo expects them. Read-only on history.             |
+| [`git-sync`](skills/git-sync/SKILL.md)                     | Merges the latest `main` into one or more branches in isolated worktrees, pre-checks for conflicts, merges only the clean ones, and prints the push commands instead of pushing.    |
+| [`git-merge-conflicts`](skills/git-merge-conflicts/SKILL.md) | Walks an in-progress merge or rebase conflict through to a resolution.                                                                                              |
+| [`ops-preflight-verify`](skills/ops-preflight-verify/SKILL.md) | The post-subagent safety net: bans destructive git commands and hard-blocks file destruction during verification.                                                                |
 
 #### Implementation
 
 | Skill                                                                          | What it hijacks                                                                                                          |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | [`sonder-sharp-implementation`](skills/sonder-sharp-implementation/SKILL.md)   | Sharp, minimal implementation for a single or few-file change — a bug fix, a tweak, a rename, an endpoint, a component.   |
-| [`sonder-sharp-implementation-batch`](skills/sonder-sharp-implementation-batch/SKILL.md) | The same, for 3+ changes where some depend on others: it fixes the order first, then implements.                  |
+| [`sonder-sharp-batch`](skills/sonder-sharp-batch/SKILL.md) | The same, for 3+ changes where some depend on others: it fixes the order first, then implements.                  |
 
 #### Backend & API
 
 | Skill                                | What it hijacks                                                                    |
 | ------------------------------------ | ------------------------------------------------------------------------------------ |
-| [`rest-api`](skills/rest-api/SKILL.md) | Resource modelling, HTTP methods, status codes, versioning, and API documentation. |
+| [`backend-rest-api`](skills/backend-rest-api/SKILL.md) | Resource modelling, HTTP methods, status codes, versioning, and API documentation. |
 
 #### Testing
 
 | Skill                                                                  | What it hijacks                                                                            |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [`vitest-testing-expert`](skills/vitest-testing-expert/SKILL.md)       | Vitest for JS/TS: components, hooks, services, mocks, coverage, Playwright.                |
+| [`test-vitest`](skills/test-vitest/SKILL.md)       | Vitest for JS/TS: components, hooks, services, mocks, coverage, Playwright.                |
 
 #### Front end, accessibility & SEO
 
 | Skill                                                | What it hijacks                                                                     |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | [`frontend-design`](skills/frontend-design/SKILL.md) | Distinctive, production-grade interfaces — and the judgment to avoid generic AI aesthetics. |
-| [`accessibility`](skills/accessibility/SKILL.md)     | WCAG 2.2 audits and fixes: keyboard paths, screen-reader support, semantics.        |
-| [`contrast-fixes`](skills/contrast-fixes/SKILL.md)   | The narrow, high-frequency case: colour-contrast ratios to WCAG AA, hue-preserving. |
-| [`seo`](skills/seo/SKILL.md)                         | Meta tags, structured data, sitemaps, search visibility.                            |
+| [`frontend-a11y`](skills/frontend-a11y/SKILL.md)     | WCAG 2.2 audits and fixes: keyboard paths, screen-reader support, semantics.        |
+| [`frontend-contrast`](skills/frontend-contrast/SKILL.md)   | The narrow, high-frequency case: colour-contrast ratios to WCAG AA, hue-preserving. |
+| [`frontend-seo`](skills/frontend-seo/SKILL.md)                         | Meta tags, structured data, sitemaps, search visibility.                            |
 
 #### Media
 
 | Skill                                                        | What it hijacks                                                                                          |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| [`image-access`](skills/image-access/SKILL.md)               | Finding and reading images across WSL and the Windows host — pasted screenshots, `C:\…` paths, the clipboard. |
-| [`ffmpeg-image-ops`](skills/ffmpeg-image-ops/SKILL.md)       | Convert, resize, optimise and batch-process raster images with ffmpeg rather than Pillow.                |
-| [`pdf-revision`](skills/pdf-revision/SKILL.md)               | Turns a PDF review doc — screenshots plus numbered notes — into page renders, cropped PNGs and a digest. |
+| [`media-image-access`](skills/media-image-access/SKILL.md)               | Finding and reading images across WSL and the Windows host — pasted screenshots, `C:\…` paths, the clipboard. |
+| [`media-ffmpeg`](skills/media-ffmpeg/SKILL.md)       | Convert, resize, optimise and batch-process raster images with ffmpeg rather than Pillow.                |
+| [`docs-pdf-revision`](skills/docs-pdf-revision/SKILL.md)               | Turns a PDF review doc — screenshots plus numbered notes — into page renders, cropped PNGs and a digest. |
 
 #### Docs, agents & operations
 
 | Skill                                                                                        | What it hijacks                                                                            |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [`agents-md-generator`](skills/agents-md-generator/SKILL.md)                                 | Writes a minimal, high-signal `AGENTS.md`, pushing the detail into `docs/{SCOPE}.md`.      |
-| [`agents-md-fixer`](skills/agents-md-fixer/SKILL.md)                                         | The same, for a bloated one: audited and split by progressive disclosure.                  |
-| [`agents-md-progressive-disclosure`](skills/agents-md-progressive-disclosure/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
-| [`agents-md-workflow-optimizer`](skills/agents-md-workflow-optimizer/SKILL.md)               | Makes sessions faster: grounds the project's scoped commands, gate-output protocol and skill routing in `AGENTS.md`. Bundles `plan-lint`. |
-| [`shared-hosting-deploy`](skills/shared-hosting-deploy/SKILL.md)                             | GitHub Actions deploys to shared hosting over SSH + rsync, keeping the server's multi-GB assets untouched. |
-| [`daily-report`](skills/daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
-| [`sonder-find-skills`](skills/sonder-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers.                      |
+| [`docs-agents-md-generate`](skills/docs-agents-md-generate/SKILL.md)                                 | Writes a minimal, high-signal `AGENTS.md`, pushing the detail into `docs/{SCOPE}.md`.      |
+| [`docs-agents-md-fix`](skills/docs-agents-md-fix/SKILL.md)                                         | The same, for a bloated one: audited and split by progressive disclosure.                  |
+| [`docs-agents-md-progressive`](skills/docs-agents-md-progressive/SKILL.md)       | The refactor itself: an instructions file past ~60 lines that mixes always-on rules with task detail. |
+| [`docs-agents-md-optimize`](skills/docs-agents-md-optimize/SKILL.md)               | Makes sessions faster: grounds the project's scoped commands, gate-output protocol and skill routing in `AGENTS.md`. Bundles `plan-lint`. |
+| [`deploy-shared-hosting`](skills/deploy-shared-hosting/SKILL.md)                             | GitHub Actions deploys to shared hosting over SSH + rsync, keeping the server's multi-GB assets untouched. |
+| [`ops-daily-report`](skills/ops-daily-report/SKILL.md)                                               | Turns the day's commits into a compressed standup report.                                  |
+| [`research-find-skills`](skills/research-find-skills/SKILL.md)                                   | Routes a problem to the right skill of ours by proficiency, in tiers.                      |
 
 ---
 

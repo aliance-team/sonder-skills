@@ -2,9 +2,9 @@
 
 Guidance for agents working in this repository (`sonder-skills`).
 
-## Commits — use `atomic-commits`, without exception
+## Commits — use `git-atomic-commit`, without exception
 
-All commits follow the `skills/atomic-commits` skill. No exceptions:
+All commits follow the `skills/git-atomic-commit` skill. No exceptions:
 
 - **One file per commit.** Never `git add .` / `git add -A` / `git add <dir>/`,
   and never group two or more files in a single commit.
@@ -14,7 +14,7 @@ All commits follow the `skills/atomic-commits` skill. No exceptions:
 
   ```bash
   printf 'path/to/file\ttype(scope): message\n' > /tmp/commits.txt
-  bash skills/atomic-commits/atomic-commits.sh /tmp/commits.txt
+  bash skills/git-atomic-commit/scripts/atomic-commits.sh /tmp/commits.txt
   ```
 
 - **No** co-author/attribution footers, and **no** `[skip ci]` unless explicitly asked

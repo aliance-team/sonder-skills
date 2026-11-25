@@ -1,0 +1,32 @@
+{
+  "schema": "batch-pr-flow/audit-stack-fixture@1",
+  "repo": "example/repo",
+  "base": "origin/main",
+  "baseSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "prefix": "fastcatalog/",
+  "branches": [
+    {
+      "name": "fastcatalog/01-merge-commit",
+      "tip": "2121212121212121212121212121212121212121",
+      "pr": 401,
+      "state": "MERGED",
+      "baseRefName": "main",
+      "headRefOid": "2121212121212121212121212121212121212121",
+      "mergeCommit": "3131313131313131313131313131313131313131",
+      "mergedAt": "2026-11-20T10:00:00Z",
+      "ahead": 2,
+      "behind": 4,
+      "uniqueCommitCount": 2,
+      "deltaFiles": 2,
+      "insertions": 12,
+      "deletions": 1,
+      "mergeCommitAncestor": true,
+      "headAncestor": true,
+      "treeMatches": false,
+      "commitsOutsidePr": 0,
+      "commitsAfterHead": 0,
+      "prCommitCount": 2,
+      "expect": "MERGED_CLEAN"
+    }
+  ]
+}
