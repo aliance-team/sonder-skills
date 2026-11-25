@@ -49,11 +49,14 @@ Read the whole plan before touching anything, then compute waves and print them 
 8. **Check scope.** If a subagent edited files outside its `**Files:**` set, stop and flag it — report which files and which phase. Do not absorb the extra edits silently.
 9. **Verification phase: run its strategies concurrently.** Adversarial review is a fresh-context subagent with break-it rules that never sees the implementer's reasoning; property and fuzz suites run in parallel alongside it. Deferred gates from earlier phases are checked here, in one place.
 10. **Closeout phase: execute it like any other phase.** It runs last, as its own one-phase wave (inline, since deleting the plan is the orchestrator's own write), and it writes or updates the agent-optimized reference doc for the feature, adds the context pointer (reference index / AGENTS.md), updates stale docs, deletes the plan file, and gates on: plan file gone, doc exists with valid cited paths, pointer resolves.
+
+    **Docs phases are write-first and read-budgeted.** A phase whose deliverable is prose (Closeout, reference docs, issues register) must produce its first file before it is allowed to read broadly. Two failure modes to design out: an unbounded "verify everything you document" mandate sends the agent into a read pass over every changed file and it writes nothing (observed: a closeout phase burned its whole budget reading ~30 files and produced zero artifacts until it was pinged); and a silent read-only stall is invisible to the orchestrator. So the prompt must say: write the doc skeleton first, cap source reads (a small number, e.g. 6, unless a specific claim is unverifiable), check each cited path exists at the moment you cite it rather than pre-verifying in bulk, and report "files written so far" in the reply. On the orchestrator side, if a delegated phase goes idle with no filesystem delta (glob the expected output paths and find nothing new), send one "stop reading, write now" follow-up before waiting further.
+
 11. **If the plan itself turns out to be wrong** mid-execution (a phase's premise is false, a task no longer makes sense given what's been learned) — stop and flag it. Don't push through or silently reinterpret the plan out from under the user.
 
 ## Definition of done
 
-Every checkbox in the file is `- [x]`, the Closeout gate has passed, and the plan file is deleted. Deletion is the formal close: the feature's reference doc exists with valid cited paths, the context pointer resolves, and stale docs are updated.
+Every checkbox in the file is `- [x]`, the Closeout gate has passed, and the plan file is deleted. Deletion is the formal close: the feature's reference doc exists with valid cited paths, the context pointer resolves, and stale docs are updated. Prose deliverables are written incrementally, not after a bulk read pass.
 
 If execution stops partway (gate failure, session end), leave the file exactly as-is — accurate checkbox state is the resumption point. That rule covers interrupted runs only; once Closeout passes, the plan is deleted rather than kept as a record.
 
