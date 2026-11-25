@@ -52,3 +52,22 @@ Full factory model, gates, PR body template, and incident-derived rules:
 [references/factory-harness.md](references/factory-harness.md).
 
 Complements `delivery-harness` (delivery units and stacking) and `git-atomic-commit` (commit shape).
+
+## Absolute paths: `git -C`, never a bare `cd`
+
+- Every git command in a handoff block, script or scripted sequence names its own repository: `git -C /abs/path push -u origin <branch>`. Never `cd /abs/path && git …`.
+- Why: `cd` mutates shell state past the command. In a `&&` chain a mid-chain failure leaves the *next* command running in the wrong repo; a partial copy-paste starts wherever the terminal happens to be; with two repos in one block it is the difference between pushing the right branch and the wrong one.
+- `gh` resolves the repository from the working directory and has no per-command path flag, so confine its `cd` to a subshell: `( cd /abs/path && gh pr create --base main … )`. The parenthesis ends the directory change with the command.
+- `-C` goes before the subcommand: `git -C <path> push`, never `git push -C`.
+- When a block spans repos, keep every command absolute. The block must be re-runnable from any working directory, and individually pasteable line by line.
+
+Bad:
+```
+cd /repo/a && git push -u origin feat && gh pr create --base main … && cd /repo/b && git push -u origin other
+```
+
+Good:
+```
+git -C /repo/a push -u origin feat && ( cd /repo/a && gh pr create --base main … ) && \
+git -C /repo/b push -u origin other && ( cd /repo/b && gh pr create --base main … )
+```
