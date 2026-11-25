@@ -59,6 +59,76 @@ Text inside a UI component needs the **text** threshold, not the 3:1 UI threshol
 
 So 2.5:1 fails everything. 3.5:1 passes a UI boundary but **fails** normal text.
 
+## Pure black and pure white
+
+`#000000` and `#FFFFFF` are banned as UI text and as default surfaces. They still
+exist, as the last rung of an escalation ladder, but they are never the first
+suggestion and never a silent one.
+
+### Why the extremes hurt
+
+- **Halation.** White glyphs on pure black bloom at the edges: thin strokes look
+  thicker and softer than they are. Worse for astigmatism, worse at small sizes.
+- **Glare.** A `#FFFFFF` surface in a dim room is a light source, not a
+  background. The user turns the display down, and everything else on the page
+  loses contrast with it.
+- **No room for elevation.** Page `#000000` plus card `#FFFFFF` leaves nowhere to
+  put a raised layer, a border, or a hover surface. Depth becomes impossible and
+  hierarchy has to be carried by outlines alone.
+- **OLED smear.** On OLED, pure-black pixels are off. Scrolling a `#000000`
+  surface switches pixels on and off, which ghosts and smears.
+- **It looks unnatural.** Real surfaces reflect ambient light; nothing in the
+  world is `#000000`. Pure extremes read as a mockup, not a product.
+
+### The substitutes
+
+| Role | Use | Instead of |
+|---|---|---|
+| Dark surface | `#0E0E0E`–`#1A1A1A` (`#121212` Spotify, `#0F0F0F` YouTube) | `#000000` |
+| Light text on dark | `#F7F8FA`–`#FBFBFD` | `#FFFFFF` |
+| Body text / ink on light | `#16181D`–`#333333` | `#000000` |
+| Light surface | `#F7F8FA`–`#FAFAFA`, or a 2–4% tint of the brand hue | `#FFFFFF` |
+
+### The hard constraint people miss
+
+With dark-text luminance `L_d` and light-text luminance `L_w`, the worst
+background is the geometric middle of the two. Better colours buy a ratio that
+peaks at exactly one background luminance:
+
+```
+best achievable ratio = sqrt((L_w + 0.05) / (L_d + 0.05))
+```
+
+- Pure `#000000` / `#FFFFFF`: `sqrt(1.05 / 0.05)` = **4.58:1** — barely over AA,
+  and only at the midpoint.
+- Soft `#16181D` / `#F7F8FA`: `sqrt(0.98811 / 0.05912)` = **4.09:1** — *below* AA,
+  so a band of backgrounds exists where **neither** soft colour passes: `L_bg`
+  between **0.170 and 0.216**, mid-greys about **`#727272`–`#808080`**.
+
+`#737373` is the live example: `#16181d` on it is 3.75:1 and `#f7f8fa` on it is
+4.46:1, so both fail. Do not pick one grey for every surface.
+
+**Use a ladder and escalate only inside the band:**
+
+1. `soft` — `#16181d` on light, `#f7f8fa` on dark. The default.
+2. `firm` — `#08080a` on light, `#fbfbfd` on dark. Only when soft lands under 4.5.
+3. `extreme` — `#000000` / `#ffffff`. Only inside the mid band, and only if the
+   report names the tier.
+
+Never silently ship a 4.1:1 label. Escalate one rung and name it, or move the
+surface.
+
+### Moving the surface keeps the aesthetics
+
+The label's tier is a whisper next to moving the surface. Darken or lighten the
+brand fill by ~10–15%, keep the soft label, and the ratio clears AA without
+touching the text. That is the recommended path for a brand colour that would
+otherwise need extreme text: `#FFD741` carries `#16181d` at 12.73:1, `#0F4FC0`
+carries `#f7f8fa` at 6.81:1, `#2c78aa` carries `#f7f8fa` at 4.52:1.
+
+Rule: **never drop the label below 4.5:1 to keep a surface pretty. Move the
+surface.**
+
 ## Analysis Process
 
 ### 1. Extract component structure
@@ -83,7 +153,15 @@ python3 ~/.agents/skills/frontend-contrast/contrast.py "#7c8aff" "#ffffff" --tex
 ```
 
 Options: `--text` (4.5:1 gate), `--large` (3:1 gate), `--ui` (3:1 non-text gate),
-`--fix` (suggest a hue-preserving replacement that passes).
+`--fix` (suggest a hue-preserving replacement that passes), `--pair BG` (best
+text colour for that background across the soft/firm/extreme ladder).
+
+```bash
+python3 ~/.agents/skills/frontend-contrast/contrast.py --pair "#FFD741"
+#   tier: soft   dark=#16181d 12.73  light=#f7f8fa  1.31  -> #16181d
+#   tier: firm   dark=#08080a 14.34  light=#fbfbfd  1.35
+#   tier: extreme dark=#000000 15.05  light=#ffffff  1.40
+```
 
 ### 4. Check every state
 Default, hover, focus-visible, active, selected, disabled, and placeholder.
@@ -96,12 +174,18 @@ concrete hex recommendation with its resulting ratio.
 
 ## Fixing Contrast
 
+- **Never reach for `#000000` or `#ffffff` first.** Start at the soft tier
+  (`#16181d` on light, `#f7f8fa` on dark). A pure extreme is the last rung of the
+  ladder, only inside the mid-grey band, and only if the report names the tier.
 - **Preserve the hue.** Adjust lightness only, so brand identity survives. Adjust
   whichever of foreground/background is easier to move without breaking the design.
 - **Prefer the smaller change.** Going from `#7c8aff` to `#5061ff` beats replacing
   the palette.
 - **Move the text, not the surface**, when the surface is a brand color used
   elsewhere. Moving a button background breaks every other component using it.
+- **But move the surface, not the label, when the label would fall under 4.5:1.**
+  A ~10–15% darkening or lightening of the fill keeps the aesthetic and keeps the
+  soft text colour. Never trade readability for a fill.
 - **Never fix contrast by removing the design.** If a brand color cannot reach
   4.5:1 on its intended surface, say so and propose a documented deviation
   rather than silently shipping a different palette.
@@ -119,6 +203,7 @@ Violations found: N
 Location : src/components/Foo.tsx:42
 Type     : button label ("Ver producto")
 Current  : #ffffff on #1d4ed8  (4.83:1)
+Pair     : label: #16181d on #FFD741 (12.73:1, soft tier)
 Required : 4.5:1 normal text (WCAG 1.4.3)
 Status   : PASS
 
@@ -135,6 +220,11 @@ Note     : icon-only, so the 3:1 UI threshold applies, not 4.5:1
 
 Keep it terminal-friendly: simple markdown, hex in backticks, one violation per
 block. Lead with the count so the user can decide whether to read on.
+
+Every block carries a `Pair` line: the label colour, its surface, the ratio, and
+the ladder tier (`soft`, `firm`, `extreme`). Naming the tier is what stops a
+pure extreme from slipping in unnoticed — if the tier is `extreme`, say in one
+line why the surface could not move instead.
 
 ## Verifying a Fix
 
