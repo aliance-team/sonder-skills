@@ -43,6 +43,15 @@ Every skill is a self-contained `SKILL.md` — trigger conditions, an explicit
 process, hard gates, and a defined output contract. The model doesn't
 _imagine_ a workflow; it executes one.
 
+### Skill naming
+
+A first-party skill directory is `skills/<category>-<name>`, with the category
+registered in [`scripts/skill-names.json`](scripts/skill-names.json):
+`backend-`, `deploy-`, `docs-`, `frontend-`, `git-`, `legacy-`, `media-`,
+`ops-`, `plan-`, `research-`, `review-`, `sonder-`, `test-`. New and renamed
+skills must carry one; `node scripts/lint-skill-names.mjs` enforces it, and the
+`legacy` list of not-yet-renamed skills may only shrink.
+
 ### ★ Core Three
 
 The load-bearing trio — plan the work, run the pipeline, ship the result.
