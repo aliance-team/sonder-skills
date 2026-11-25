@@ -7,6 +7,7 @@ Usage:
   contrast.py FG BG --large      # gate against 3.0:1 (WCAG 1.4.3 large text)
   contrast.py FG BG --ui         # gate against 3.0:1 (WCAG 1.4.11 non-text)
   contrast.py FG BG --fix        # suggest a hue-preserving passing colour
+  contrast.py --pair BG          # best text colour for BG, across the soft ladder
   contrast.py --selfcheck        # verify the implementation
 
 Accepts #rgb, #rrggbb, #rrggbbaa, rgb()/rgba(), and CSS colour keywords.
@@ -147,6 +148,59 @@ def suggest(fg: tuple[int, int, int], bg: tuple[int, int, int], target: float):
     return best
 
 
+# Never recommend a pure extreme as the first answer: #000000 halates and kills
+# elevation on dark surfaces, #ffffff glares on light ones. Escalate in tiers, and
+# only reach the extremes when the background sits in the mid band where no soft
+# colour can reach 4.5:1.
+TIERS = (
+    ("soft", "#16181d", "#f7f8fa"),
+    ("firm", "#08080a", "#fbfbfd"),
+    ("extreme", "#000000", "#ffffff"),
+)
+
+
+def pair_report(bg_rgb: tuple[int, int, int], target: float = NORMAL_TEXT) -> None:
+    """Print the text-colour ladder for one background and pick the first rung.
+
+    The ladder exists because two colours can only guarantee a ratio up to
+    sqrt((L_w + 0.05) / (L_d + 0.05)) at the geometric middle of the background
+    luminance: 4.58:1 for pure black/white, 4.09:1 for the soft tier. Backgrounds
+    between those two luminance bounds are the band where neither soft colour
+    passes, so they need the next rung.
+    """
+    rows = []
+    for tier, dark_hex, light_hex in TIERS:
+        dark = parse_hex(dark_hex)[:3]
+        light = parse_hex(light_hex)[:3]
+        dr, lr = ratio(dark, bg_rgb), ratio(light, bg_rgb)
+        best, br = (dark_hex, dr) if dr >= lr else (light_hex, lr)
+        rows.append((tier, dark_hex, dr, light_hex, lr, best, br))
+
+    chosen = next((r for r in rows if r[6] >= target), None)
+    for r in rows:
+        tier, dark_hex, dr, light_hex, lr, _, _ = r
+        mark = f"-> {r[5]}" if r is chosen else ""
+        print(f"  tier: {tier:<6} dark={dark_hex} {dr:5.2f}  "
+              f"light={light_hex} {lr:5.2f}  {mark}".rstrip())
+
+    if chosen is None:
+        print(f"  note: no rung reaches {target}:1; background is inside the mid "
+              "band - move the surface instead")
+    elif chosen[0] != "soft":
+        print(f"  note: {chosen[0]} tier required here; say so, do not ship it silently")
+
+
+def soften(best, bg: tuple[int, int, int], target: float):
+    """Swap a pure #000000/#ffffff result for the nearest off-extreme that still passes."""
+    if best is None or best[0] not in ("#000000", "#ffffff"):
+        return best
+    v = 12 if best[0] == "#000000" else 243
+    cand = (v, v, v)
+    if ratio(cand, bg) >= target:
+        return (hexs(cand), ratio(cand, bg)) + best[2:]
+    return best
+
+
 def verdict(cr: float, target: float) -> str:
     if cr >= 7.0:
         tag = "AAA"
@@ -208,11 +262,16 @@ def main() -> int:
     ap.add_argument("--fix-bg", action="store_true",
                     help="suggest a passing BACKGROUND, preserving its hue")
     ap.add_argument("--target", type=float)
+    ap.add_argument("--pair", metavar="BG",
+                    help="print the soft/firm/extreme text ladder for BG")
     ap.add_argument("--selfcheck", action="store_true")
     a = ap.parse_args()
 
     if a.selfcheck:
         return selfcheck()
+    if a.pair:
+        pair_report(parse_css(a.pair)[:3], a.target or NORMAL_TEXT)
+        return 0
     if not a.fg or not a.bg:
         ap.print_help()
         return 2
@@ -260,7 +319,7 @@ def main() -> int:
 
     if a.fix:
         t = target or NORMAL_TEXT
-        got = suggest(fg_rgb, bg_rgb, t)
+        got = soften(suggest(fg_rgb, bg_rgb, t), bg_rgb, t)
         if got:
             how = "hue + saturation reduced" if len(got) > 3 else "hue preserved, lightness only"
             print(f"  fix foreground: {got[0]} ({got[1]:.2f}:1) - {how}")
@@ -269,7 +328,7 @@ def main() -> int:
 
     if a.fix_bg:
         t = target or NORMAL_TEXT
-        got = suggest(bg_rgb, fg_rgb, t)
+        got = soften(suggest(bg_rgb, fg_rgb, t), fg_rgb, t)
         if got:
             how = "hue + saturation reduced" if len(got) > 3 else "hue preserved, lightness only"
             print(f"  fix background: {got[0]} ({got[1]:.2f}:1) - {how}")
